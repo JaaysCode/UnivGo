@@ -1,10 +1,15 @@
 import React from 'react'
 
-const InputForm = ({placeholder}: {placeholder: string}) => {
+interface InputFormProps  {
+    placeholder: string;
+    typeInput: string;
+};
+
+const InputForm = ({placeholder, typeInput} : InputFormProps) => {
   return (
     <div className="relative mb-4">
         <input  
-            type="text"
+            type={typeInput}
             placeholder=" "
             id="floating-input"
             className='
