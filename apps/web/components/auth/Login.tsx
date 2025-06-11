@@ -1,6 +1,7 @@
 import InputForm from "../InputForm" 
 import {Button} from "../Button"
 import Ulogo from "../Ulogo"
+import Checkbox from "../Checkbox"
 
 export function Login(){
     return(
@@ -40,19 +41,13 @@ export function Login(){
                             
                             {/* Opciones adicionales */}
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                    <input
-                                        id="remember-me"
-                                        name="remember-me"
-                                        type="checkbox"
-                                        className="h-4 w-4 text-[var(--primary-blue)] focus:ring-[var(--primary-blue)] border-[var(--primary-gray)] rounded"
-                                    />
-                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-[var(--text-color)]">
-                                        Recordarme
-                                    </label>
-                                </div>
+                                {/* Checkbox personalizado */}
+                                <Checkbox id="remember-me" label="Recordarme" />
                                 
-                                <a href="" className="text-sm font-medium text-[var(--primary-blue)] hover:underline">
+                                <a 
+                                  href="" 
+                                  className="text-sm font-medium text-[var(--primary-blue)] hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:ring-offset-2 rounded-sm"
+                                >
                                     Olvidé mi Contraseña
                                 </a>
                             </div>
