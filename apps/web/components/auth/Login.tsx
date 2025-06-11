@@ -1,6 +1,6 @@
 import InputForm from "../InputForm" 
 import {Button} from "../Button"
-import Ulogo from "../Ulogo"
+import Ulogo from "../Logo"
 
 export function Login(){
     return(
@@ -13,7 +13,7 @@ export function Login(){
                 {/* Tarjeta semitransparente */}
                 <div className="backdrop-blur-md bg-white/30 p-6 sm:p-10 rounded-xl shadow-[0_10px_50px_rgba(0,0,0,0.5)] min-h-[530px] border border-white/20">
                     <div className="flex justify-center mb-6 sm:mb-8">
-                        <Ulogo />
+                        <Ulogo imageSource="/udem_logo.png" alt='Logo de La Universidad de Medellín' width={100} height={100} styles="mb-6"/>
                     </div>
                     <div className="w-full"> {/* Eliminado max-w-xs de aquí, ya que max-w-md lo controla el padre */}
                         <InputForm id="documentoIdentidad" placeholder="Documento identidad" typeInput = "text"/>
