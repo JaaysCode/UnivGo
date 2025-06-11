@@ -14,8 +14,12 @@ export function Login(){
                 <div className="flex items-center justify-center">
                     <div className="backdrop-blur-md bg-white/75 p-8 sm:p-10 rounded-xl shadow-[0_10px_50px_rgba(0,0,0,0.5)] w-full border border-white/20">
                         {/* Logo centrado */}
-                        <div className="flex justify-center mb-8">
+                        <div className="flex flex-col items-center mb-6">
                             <Ulogo />
+                            <h1 className="text-2xl font-bold text-[var(--text-color)]">UnivGo</h1>
+                            <p className="text-sm text-[var(--secondary-text)] text-center mt-1">
+                                Tu plataforma universitaria
+                            </p>
                         </div>
                         
                         {/* Formulario */}
@@ -34,16 +38,35 @@ export function Login(){
                               typeInput="password" 
                             />
                             
-                            {/* Enlace de contraseña olvidada */}
-                            <div className="flex justify-end">
-                                <a href="" className="text-sm text-[var(--primary-blue)] hover:underline">
+                            {/* Opciones adicionales */}
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center">
+                                    <input
+                                        id="remember-me"
+                                        name="remember-me"
+                                        type="checkbox"
+                                        className="h-4 w-4 text-[var(--primary-blue)] focus:ring-[var(--primary-blue)] border-[var(--primary-gray)] rounded"
+                                    />
+                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-[var(--text-color)]">
+                                        Recordarme
+                                    </label>
+                                </div>
+                                
+                                <a href="" className="text-sm font-medium text-[var(--primary-blue)] hover:underline">
                                     Olvidé mi Contraseña
                                 </a>
                             </div>
                             
                             {/* Botón de acceso */}
-                            <div className="flex justify-center pt-4">
+                            <div className="pt-4 flex justify-center">
                                 <Button text="Entrar" />
+                            </div>
+                            
+                            {/* Footer con información de la app */}
+                            <div className="border-t border-[var(--primary-gray)] pt-4 mt-6">
+                                <p className="text-xs text-center text-[var(--secondary-text)]">
+                                    Reserva espacios deportivos, consulta tu información académica y mucho más.
+                                </p>
                             </div>
                         </div>
                     </div>
