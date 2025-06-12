@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { FaUser } from "react-icons/fa6"; // Importing the user icon
 
 interface DropdownItem {
   id: string;
@@ -44,7 +44,6 @@ export const Profile = ({
   }, []);
 
   // Use a default image if none is provided
-  const avatarSrc = imageUrl || "/default-avatar.png";
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
@@ -59,13 +58,12 @@ export const Profile = ({
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <span className="sr-only">Open user menu</span>
-          <div className="h-8 w-8 rounded-full overflow-hidden relative ring-2 ring-white/30">
-            <Image
-              className="object-cover"
-              src={avatarSrc}
-              alt={altText}
-              fill
-              sizes="32px"
+          <div className="h-8 w-8 rounded-full overflow-hidden relative flex items-center justify-center transition-all duration-300 ease-in-out
+                    hover:bg-[var(--primary-blue)] focus-outline-none group
+                    cursor-pointer">
+            <FaUser
+              className="text-white transition-colors duration-300"
+              size={16}
             />
           </div>
           {userName && (
