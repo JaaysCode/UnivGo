@@ -18,8 +18,8 @@ const profileDropdownItems = [
 
 // Navigation items
 const navItems = [
-  { text: "Mis reservas", href: "" },
-  { text: "Espacios", href: "" },
+  { text: "Mis reservas", href: "/mis-reservas" },
+  { text: "Espacios", href: "/espacios" },
 ];
 
 export const Navbar = () => {
@@ -44,13 +44,11 @@ export const Navbar = () => {
                 styles=""
               />
             </Link>
-          </div>
-
-          {/* Center: NavButtons (hidden on small screens) */}
+          </div>          {/* Center: NavButtons (hidden on small screens) */}
           <div className="hidden md:flex items-center justify-center space-x-1">
-            {navItems.map((item) => (
+            {navItems.map((item, index) => (
               <NavButton
-                key={item.href}
+                key={`nav-item-${index}`}
                 text={item.text}
                 pageReference={item.href}
                 isActive={pathname === item.href}
@@ -65,9 +63,10 @@ export const Navbar = () => {
               type="button"
               className="relative rounded-full p-2 text-white 
                          transition-all duration-300 ease-in-out
-                         hover:text-white hover:bg-white/10 hover:shadow-lg
-                         active:bg-white active:text-[var(--primary-red)]
-                         focus:outline-none"
+                         hover:bg-[var(--primary-blue)] 
+                         hover:scale-95
+                         focus:outline-none cursor-pointer
+                         "
               aria-label="View notifications"
             >
               <span className="absolute -inset-1.5"></span>
@@ -124,12 +123,11 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu (hidden by default) - can be expanded in the future */}
-      <div className="hidden md:hidden">
+      {/* Mobile menu (hidden by default) - can be expanded in the future */}      <div className="hidden md:hidden">
         <div className="px-2 pt-2 pb-3 space-y-1">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <Link
-              key={item.href}
+              key={`mobile-nav-${index}`}
               href={item.href}
               className={`
                 block px-3 py-2 rounded-md text-base font-medium 
