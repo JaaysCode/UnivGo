@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import Logo from '../Logo'
+import Ulogo from '../Logo'
 import Link from 'next/link'
 
 const FooterInfo = () => {  return (
@@ -12,8 +12,10 @@ const FooterInfo = () => {  return (
             <p>+57 (604) 590 45 00 • +57 (604) 590 69 99</p>
             <p>Sede principal: Carrera 87 N° 30-65, Medellín - Colombia.</p>
             <p>Sede Bogotá: Calle 57 # 9-52, Chapinero.</p>
-        </div>        {/* Columna central - Política y estatutos */}
-        <div className='flex-grow text-sm text-center flex flex-col justify-center items-center mx-auto space-y-2 md:ml-12 md:mr-8'>
+        </div>        
+        
+        {/* Columna central - Política y estatutos */}
+        <div className='flex-grow text-sm text-center flex flex-col justify-center items-center mx-auto space-y-2 md:ml-10 md:mr-8'>
             <p className='text-center'>
                 Institución de educación superior sujeta a la inspección y vigilancia
                 <br/>del Ministerio de Educación Nacional.
@@ -34,15 +36,16 @@ const FooterInfo = () => {  return (
                     <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300 ease-in-out'></span>
                 </Link>
             </div>
-        </div>        {/* Columna derecha - Logo */}
-        <div className='flex justify-end md:w-1/4'>
+        </div>        
         
-            <Logo 
+        {/* Columna derecha - Logo */}
+        <div className='flex justify-end md:w-1/4'>
+            <Ulogo 
                 imageSource="/udem_logo_letras.png" 
                 alt='Logo de La Universidad de Medellín' 
                 width={300} 
                 height={300} 
-                styles="mb-6"
+                styles="mb-1"
             />
         </div>
     </div>

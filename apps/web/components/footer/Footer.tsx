@@ -1,7 +1,7 @@
 import React from 'react'
 import SocialMediaIcons from './SocialMediaIcons'
 import FooterInfo from './FooterInfo'
-import Ulogo from '../Logo'
+
 const Footer = () => {
   return (
     <footer className='bg-[var(--primary-red)] text-white '>      
