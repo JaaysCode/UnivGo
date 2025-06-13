@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Ulogo from '../Logo'
-import Link from 'next/link'
+import CustomLink from '../CustomLink'
 
 const FooterInfo = () => {  return (
     <div className='flex flex-col md:flex-row justify-between items-start md:items-center w-full'>
@@ -10,8 +10,8 @@ const FooterInfo = () => {  return (
             <p className='font-medium text-base mb-1'>Universidad de Medellín</p>
             
             <p>+57 (604) 590 45 00 • +57 (604) 590 69 99</p>
-            <p>Sede principal: Carrera 87 N° 30-65, Medellín - Colombia.</p>
-            <p>Sede Bogotá: Calle 57 # 9-52, Chapinero.</p>
+            <p>Sede principal: <CustomLink href="https://maps.app.goo.gl/ZqFGksakWsk1daP4A" children='Carrera 87 N° 30-65, Medellín - Colombia.'/></p>
+            <p>Sede Bogotá: <CustomLink href='https://maps.app.goo.gl/yb2TSy55T54bfTZj6' children='Calle 57 # 9-52, Chapinero.'/></p>
         </div>        
         
         {/* Columna central - Política y estatutos */}
@@ -21,20 +21,8 @@ const FooterInfo = () => {  return (
                 <br/>del Ministerio de Educación Nacional.
             </p>
             <div className='flex flex-col items-center '>                
-                <Link 
-                    href="/politicas-datos" 
-                    className='relative text-white underline hover:no-underline group mt-5'
-                >
-                    Política para el Manejo y Tratamiento de Datos Personales
-                    <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300 ease-in-out'></span>
-                </Link>
-                <Link 
-                    href="/propiedad-intelectual" 
-                    className='relative text-white underline hover:no-underline group mt-1'
-                >
-                    Estatuto de Propiedad Intelectual
-                    <span className='absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300 ease-in-out'></span>
-                </Link>
+                <CustomLink href='/politicas-datos' children='Política para el Manejo y Tratamiento de Datos Personales' target=''/>
+                <CustomLink href='/propiedad-intelectual' children='Estatuto de Propiedad Intelectual' target=''/>
             </div>
         </div>        
         

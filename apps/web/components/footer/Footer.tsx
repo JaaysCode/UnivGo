@@ -4,7 +4,7 @@ import FooterInfo from './FooterInfo'
 
 const Footer = () => {
   return (
-    <footer className='bg-[var(--primary-red)] text-white '>      
+    <footer className='bg-gradient-to-r from-[var(--primary-red)] via-[var(--secondary-dark-red)] to-[var(--primary-red)] text-white '>      
         <div className='max-w-[95%] mx-auto px-[50px] py-[25px] flex items-center justify-between border-b border-white'>
             <SocialMediaIcons/>
         </div>
