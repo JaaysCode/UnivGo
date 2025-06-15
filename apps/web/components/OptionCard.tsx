@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
 import Image from "next/image";
-import { Button } from "../Button";
+import { Button } from "@/components/Button";
 
 interface OptionCardProps {
   title: string;
