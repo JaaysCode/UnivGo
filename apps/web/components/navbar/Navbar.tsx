@@ -12,7 +12,7 @@ const profileDropdownItems = [
   {
     id: "signout",
     label: "Sign out",
-    onClick: () => console.log("Signing out..."),
+    href: "/",
   },
 ];
 
@@ -32,18 +32,23 @@ export const Navbar = () => {
         <div className="flex justify-between h-16 items-center">
           {/* Left: Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link
-              href="/"
+            <button
+              onClick={() => {
+              // Use Next.js app router redirect
+              window.location.href = "/protected/main"; // Adjust the path as needed
+              }}
               className="flex items-center bg-white rounded-xl p-1.5 hover:shadow-lg transition-shadow duration-300"
+              aria-label="Go to home"
+              type="button"
             >
               <Logo
-                imageSource="/UnivGo.png"
-                alt="UnivGo logo"
-                width={85}
-                height={85}
-                styles=""
+              imageSource="/UnivGo.png"
+              alt="UnivGo logo"
+              width={85}
+              height={85}
+              styles=""
               />
-            </Link>
+            </button>
           </div>          {/* Center: NavButtons (hidden on small screens) */}
           <div className="hidden md:flex items-center justify-center space-x-1">
             {navItems.map((item, index) => (
