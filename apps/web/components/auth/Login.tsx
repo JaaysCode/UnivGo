@@ -1,3 +1,4 @@
+'use client';
 import InputForm from "../InputForm" 
 import {Button} from "../Button"
 import Logo from "../Logo"
@@ -60,7 +61,10 @@ export function Login() {
                             
                             {/* Botón de acceso */}
                             <div className="pt-4 flex justify-center">
-                                <Button text="Entrar" />
+                                <Button
+                                    text="Entrar"
+                                    href="/protected/main"
+                                />
                             </div>
                             
                             {/* Footer con información de la app */}

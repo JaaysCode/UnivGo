@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 import Image from "next/image";
 import { Button } from "../Button";
@@ -8,6 +9,8 @@ interface OptionCardProps {
   imageSrc: string;
   buttonText: string;
   buttonPosition: "left" | "right";
+  buttonOnClick?: () => void;
+  buttonhref?: string;
 }
 
 const OptionCard: React.FC<OptionCardProps> = ({
@@ -16,6 +19,8 @@ const OptionCard: React.FC<OptionCardProps> = ({
   imageSrc,
   buttonText,
   buttonPosition,
+  buttonOnClick,
+  buttonhref,
 }) => {
   const isRight = buttonPosition === "right";
   return (
@@ -47,7 +52,7 @@ const OptionCard: React.FC<OptionCardProps> = ({
             </div>
           </div>
           <div className="flex items-center justify-center px-4">
-            <Button text={buttonText} />
+            <Button text={buttonText} onClick={buttonOnClick} href={buttonhref}/>
           </div>
         </div>
       </div>
