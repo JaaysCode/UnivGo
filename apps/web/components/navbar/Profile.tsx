@@ -12,15 +12,17 @@ interface DropdownItem {
 }
 
 interface ProfileProps {
-  imageUrl: string;
-  altText?: string;
+  // Marcamos como opcionales las props que no estamos usando para evitar errores
+  imageUrl?: string; // Opcional ya que no la estamos usando directamente
+  altText?: string; // Opcional ya que no la estamos usando directamente
   dropdownItems: DropdownItem[];
   userName?: string; // Optional: display user name next to picture
 }
 
 export const Profile = ({
-  imageUrl,
-  altText = "Profile",
+  // No necesitamos destructurar lo que no usamos
+  // imageUrl,
+  // altText,
   dropdownItems,
   userName,
 }: ProfileProps) => {

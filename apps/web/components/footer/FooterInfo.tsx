@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from 'next/image'
 import Ulogo from '../Logo'
 import CustomLink from '../CustomLink'
 
@@ -9,9 +8,8 @@ const FooterInfo = () => {  return (
         <div className='text-sm space-y-1 md:w-1/4'>
             <p className='font-medium text-base mb-1'>Universidad de Medellín</p>
             
-            <p>+57 (604) 590 45 00 • +57 (604) 590 69 99</p>
-            <p>Sede principal: <CustomLink href="https://maps.app.goo.gl/ZqFGksakWsk1daP4A" children='Carrera 87 N° 30-65, Medellín - Colombia.'/></p>
-            <p>Sede Bogotá: <CustomLink href='https://maps.app.goo.gl/yb2TSy55T54bfTZj6' children='Calle 57 # 9-52, Chapinero.'/></p>
+            <p>+57 (604) 590 45 00 • +57 (604) 590 69 99</p>            <p>Sede principal: <CustomLink href="https://maps.app.goo.gl/ZqFGksakWsk1daP4A">Carrera 87 N° 30-65, Medellín - Colombia.</CustomLink></p>
+            <p>Sede Bogotá: <CustomLink href='https://maps.app.goo.gl/yb2TSy55T54bfTZj6'>Calle 57 # 9-52, Chapinero.</CustomLink></p>
         </div>        
         
         {/* Columna central - Política y estatutos */}
@@ -20,9 +18,8 @@ const FooterInfo = () => {  return (
                 Institución de educación superior sujeta a la inspección y vigilancia
                 <br/>del Ministerio de Educación Nacional.
             </p>
-            <div className='flex flex-col items-center '>                
-                <CustomLink href='/politicas-datos' children='Política para el Manejo y Tratamiento de Datos Personales' target=''/>
-                <CustomLink href='/propiedad-intelectual' children='Estatuto de Propiedad Intelectual' target=''/>
+            <div className='flex flex-col items-center '>                  <CustomLink href='/politicas-datos' target=''>Política para el Manejo y Tratamiento de Datos Personales</CustomLink>
+                <CustomLink href='/propiedad-intelectual' target=''>Estatuto de Propiedad Intelectual</CustomLink>
             </div>
         </div>        
         

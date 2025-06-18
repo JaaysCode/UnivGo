@@ -41,7 +41,7 @@ const ChoiceModal: React.FC<ChoiceModalProps> = ({ open, onClose, option1, optio
             onClick={onClose}
         >
             <div
-                className="bg-red-700 rounded-lg shadow-lg flex flex-col md:flex-row w-11/12 max-w-xl mx-auto overflow-hidden"
+                className="bg-[var(--primary-red)] rounded-lg shadow-lg flex flex-col md:flex-row w-11/12 max-w-xl mx-auto overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 {[option1, option2].map((option, idx) => (
