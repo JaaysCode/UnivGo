@@ -30,8 +30,13 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.1.1",
     "@mui/x-date-pickers": "^8.5.2",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/typeorm": "^11.0.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.18.1",
-    "motion": "^12.18.1"
+    "motion": "^12.18.1",
+    "pg": "^8.16.2",
+    "typeorm": "^0.3.25"
   }
 }
