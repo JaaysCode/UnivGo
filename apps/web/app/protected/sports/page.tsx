@@ -9,8 +9,10 @@ import React, { useState } from "react";
 
 export default function SportsPage() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedSpaceName, setSelectedSpaceName] = useState<string>("");
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (spaceName: string) => {
+    setSelectedSpaceName(spaceName);
     setModalOpen(true);
   };
 
@@ -28,14 +30,14 @@ export default function SportsPage() {
             description="¡Actívate en nuestro gimnasio universitario! Tu lugar para desconectarte, recargar y poner tu cuerpo en movimiento. ¡Te esperamos para que te sientas genial!"
             buttonText="Reservar"
             buttonPosition="left"
-            buttonOnClick={handleOpenModal}
+            buttonOnClick={() => handleOpenModal("Gimnasio")}
             imageSrc="/udemgym.jpg"
           />          <OptionCard
             title="Coliseo"
             description="Tu epicentro para arte, música, teatro y eventos inolvidables. ¡Ven a vivir la cultura universitaria!"
             buttonText="Reservar"
             buttonPosition="right"
-            buttonOnClick={handleOpenModal}
+            buttonOnClick={() => handleOpenModal("Coliseo")}
             imageSrc="/Coliseo_UdeM.jpg"
           />
           <OptionCard
@@ -43,7 +45,7 @@ export default function SportsPage() {
             description="¡Siente la pasión del fútbol en nuestra cancha de grama sintética! Tu lugar para goles, jugadas épicas y la emoción del fútbol 11. ¡A rodar el balón!"
             buttonText="Reservar"
             buttonPosition="left"
-            buttonOnClick={handleOpenModal}
+            buttonOnClick={() => handleOpenModal("Cancha de grama sintética fútbol 11")}
             imageSrc="/cancha-fut11.jpg"
           />
           <OptionCard
@@ -51,7 +53,7 @@ export default function SportsPage() {
             description="El lugar perfecto para partidos rápidos, goles espectaculares y momentos inolvidables con tus amigos. ¡La cancha te espera!"
             buttonText="Reservar"
             buttonPosition="right"
-            buttonOnClick={handleOpenModal}
+            buttonOnClick={() => handleOpenModal("Cancha de grama sintética fútbol 7")}
             imageSrc="/cancha-fut7.jpg"
           />
           <div className="">
@@ -60,7 +62,7 @@ export default function SportsPage() {
             description="Perfecciona tu saque, domina tu revés y vive la emoción de cada punto. ¡Es hora de jugar!"
             buttonText="Reservar"
             buttonPosition="left"
-            buttonOnClick={handleOpenModal}
+            buttonOnClick={() => handleOpenModal("Canchas de tenis")}
             imageSrc="/campo-tenis-generico.jpg"
             />
           </div>
@@ -69,7 +71,8 @@ export default function SportsPage() {
         {/* Modal de reserva */}
       <BookingModal 
         isOpen={modalOpen} 
-        onClose={handleCloseModal} 
+        onClose={handleCloseModal}
+        spaceName={selectedSpaceName}
       />
       
       <Footer />
