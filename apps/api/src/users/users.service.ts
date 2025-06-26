@@ -6,14 +6,13 @@ import { Repository } from 'typeorm/repository/Repository';
 
 @Injectable()
 export class UsersService {
-  
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
 
   findAll() {
-    return `This action returns all users`;
+    return this.usersRepository.find();
   }
 
   findOneByIdentification(identification: string) {
