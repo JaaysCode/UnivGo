@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -13,11 +12,11 @@ function GuestsCounter({ value, onChange }: GuestsCounterProps) {
   };
 
   const decrement = () => {
-    onChange(Math.max(value - 1, 0)); // Evitamos valores negativos
+    onChange(Math.max(value - 1, 0));
   };
   
   return (
-    <div className="flex items-center bg-[var(--background-color)] p-3 rounded-lg shadow-sm border border-[var(--primary-gray)] inline-flex w-auto">      
+    <div className="items-center bg-[var(--background-color)] p-3 rounded-lg shadow-sm border border-[var(--primary-gray)] inline-flex w-auto">      
       <button 
         onClick={decrement} 
         className={`text-xl hover:scale-110 transition-transform ${
