@@ -4,7 +4,10 @@
   "description": "<p align=\"center\">\r   <img src=\"https://drive.google.com/uc?export=download&id=1G5DRy_K0lIGtc7k4Qthxg0D5LtSwoLsR\" alt=\"UnivGoLogo\" width=\"300\"/>\r </p>",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build --workspace=apps/web",
+    "dev": "npm run dev --workspace=apps/web",
+    "start": "npm run start --workspace=apps/web"
   },
   "repository": {
     "type": "git",
