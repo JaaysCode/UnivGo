@@ -1,16 +1,18 @@
-import React from 'react';
+import React from "react";
 
 interface InputFormProps {
   label: string;
   placeholder?: string; // Ahora es opcional
   typeInput: string;
   id: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputForm = ({ label, placeholder, typeInput, id }: InputFormProps) => {
+const InputForm = ({ label, placeholder, typeInput, id , value, onChange}: InputFormProps) => {
   return (
     <div className="relative mb-5">
-      <label 
+      <label
         htmlFor={id}
         className="
           block 
@@ -24,8 +26,10 @@ const InputForm = ({ label, placeholder, typeInput, id }: InputFormProps) => {
       </label>
       <input
         type={typeInput}
-        placeholder={placeholder || ''}
+        placeholder={placeholder || ""}
         id={id}
+        value={value}
+        onChange={onChange}
         className="
           w-full
           h-12
