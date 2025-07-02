@@ -5,6 +5,7 @@ import Logo from "../Logo";
 import Checkbox from "../Checkbox";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export function Login() {
   const [identification, setIdentification] = useState("");
@@ -26,7 +27,12 @@ export function Login() {
     const data = await res.json();
     const token = data.access_token;
 
-    localStorage.setItem("token", token);
+    //save bearer token in a cookie
+    Cookies.set("token", token, {
+      expires: 1,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict"
+    })
 
     router.push("/protected/main");
   };
@@ -66,7 +72,7 @@ export function Login() {
                   placeholder="Ingrese su documento"
                   typeInput="text"
                   value={identification}
-                  onChange= {(e) => setIdentification(e.target.value)}
+                  onChange={(e) => setIdentification(e.target.value)}
                 />
 
                 <InputForm
@@ -75,7 +81,7 @@ export function Login() {
                   placeholder="Ingrese su contraseña"
                   typeInput="password"
                   value={password}
-                  onChange={ (e) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
 
                 {/* Opciones adicionales */}
