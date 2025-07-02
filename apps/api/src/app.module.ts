@@ -4,9 +4,12 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { ReservationsModule } from './reservations/reservations.module';
+import { SpacesModule } from './spaces/spaces.module';
 
 @Module({
-  imports: [UsersModule,
+  imports: [
+    UsersModule,
 
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -19,7 +22,11 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
     }),
 
-    AuthModule
+    AuthModule,
+
+    ReservationsModule,
+
+    SpacesModule,
   ],
 
   controllers: [AppController],
