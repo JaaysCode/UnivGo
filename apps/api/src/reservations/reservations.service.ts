@@ -1,18 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
+import * as crypto from 'crypto';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm/repository/Repository';
 import { SpacesService } from '../spaces/spaces.service';
 import { UsersService } from '../users/users.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { ReservationGuest } from './entities/reservation-guest.entity';
 import { Reservation } from './entities/reservation.entity';
-import * as crypto from 'crypto';
 
 @Injectable()
 export class ReservationsService {
   constructor(
     @InjectRepository(Reservation)
     private readonly reservationRepository: Repository<Reservation>,
+    @InjectRepository(ReservationGuest)
+    private readonly reservationGuestRepository: Repository<ReservationGuest>,
     private readonly userService: UsersService,
     private readonly spaceService: SpacesService,
   ) {}
@@ -35,6 +39,26 @@ export class ReservationsService {
         `Space with ID ${createReservationDto.spaceId} does not exist.`,
       );
     }
+
+    const guests: User[] = [];
+
+    if (
+      createReservationDto.guestsIdentifications &&
+      createReservationDto.guestsIdentifications.length > 0
+    ) {
+      await this.userService.validateGuestsExist(
+        createReservationDto.guestsIdentifications,
+      );
+
+      for (const identification of createReservationDto.guestsIdentifications) {
+        const guest =
+          await this.userService.findOneByIdentification(identification);
+        if (guest) {
+          guests.push(guest);
+        }
+      }
+    }
+
     const totalAttendees =
       1 + (createReservationDto.guestsIdentifications?.length || 0);
 
@@ -64,8 +88,23 @@ export class ReservationsService {
       qrCodeData,
     });
 
-    await this.reservationRepository.save(reservation);
-    return reservation;
+    // Guardar la reserva primero
+    const savedReservation = await this.reservationRepository.save(reservation);
+
+    // Guardar los invitados en la tabla reservation_guests
+    if (guests.length > 0) {
+      const reservationGuests = guests.map((guest) =>
+        this.reservationGuestRepository.create({
+          reservationId: savedReservation.id,
+          guestIdentification: guest.identification,
+          guestName: guest.name,
+        }),
+      );
+
+      await this.reservationGuestRepository.save(reservationGuests);
+    }
+
+    return savedReservation;
   }
 
   async findOne(id: number): Promise<Reservation | null> {
@@ -89,9 +128,5 @@ export class ReservationsService {
 
   async remove(id: number): Promise<void> {
     await this.reservationRepository.delete(id);
-  }
-
-  generateQRCode() {
-    return 'QR_CODE_DATA';
   }
 }
