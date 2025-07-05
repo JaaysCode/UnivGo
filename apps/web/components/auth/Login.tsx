@@ -6,6 +6,7 @@ import Checkbox from "../Checkbox";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import toast, { Toaster } from "react-hot-toast";
 
 export function Login() {
   const [identification, setIdentification] = useState("");
@@ -20,7 +21,17 @@ export function Login() {
     });
 
     if (!res.ok) {
-      alert("login failed");
+      if (identification.length === 0 || password.length === 0) {
+        toast.error("Rellene todos los campos solicitados", {
+          duration: 3000,
+          position: "top-center",
+        });
+        return;
+      }
+      toast.error("Usuario o contraseña incorrectos", {
+        duration: 3000,
+        position: "top-center",
+      });
       return;
     }
 
@@ -31,14 +42,15 @@ export function Login() {
     Cookies.set("token", token, {
       expires: 1,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict"
-    })
+      sameSite: "strict",
+    });
 
     router.push("/protected/main");
   };
 
   return (
     <>
+      <Toaster />
       <div className="flex min-h-screen items-center justify-center bg-[url(/imagen_u_medellin_2.jpg)] bg-cover bg-center bg-fixed bg-no-repeat relative">
         {/* Capa de oscurecimiento con viñeta */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/10"></div>

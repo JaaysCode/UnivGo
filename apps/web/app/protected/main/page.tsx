@@ -7,10 +7,10 @@ import React, { useState } from "react";
 import { FaBuilding } from "react-icons/fa";
 import { IoIosBasketball } from "react-icons/io";
 
-
 export default function Main() {
   const [showChoiceModal, setShowChoiceModal] = useState(false);
 
+  
   return (
     <>
       <Navbar />
@@ -37,15 +37,14 @@ export default function Main() {
         option1={{
           label: "Espacio deportivo",
           route: "/protected/sports",
-          icon: IoIosBasketball
+          icon: IoIosBasketball,
         }}
         option2={{
           label: "Área común",
           route: "/protected/common",
-          icon: FaBuilding
+          icon: FaBuilding,
         }}
       />
     </>
-
   );
 }
