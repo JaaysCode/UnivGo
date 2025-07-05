@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -25,5 +25,22 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async validateGuestsExist(guestsIdentifications: string[]): Promise<void> {
+    const notFoundGuests: string[] = [];
+
+    for (const identification of guestsIdentifications) {
+      const guest = await this.findOneByIdentification(identification);
+      if (!guest) {
+        notFoundGuests.push(identification);
+      }
+    }
+
+    if (notFoundGuests.length > 0) {
+      throw new BadRequestException(
+        `The following guests are not part of the University community: ${notFoundGuests.join(', ')}`,
+      );
+    }
   }
 }
