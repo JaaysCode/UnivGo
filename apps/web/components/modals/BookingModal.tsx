@@ -1,24 +1,29 @@
 "use client";
-import React, { useState } from 'react';  // Añadido useState
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../Button';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker'; // Añadir este import
 import GuestsCounter from '@/app/protected/sports/components/GuestsCounter';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';  // Añadido dayjs
-import 'dayjs/locale/es'; // Importa el locale español
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  spaceName?: string;  // Añadido para recibir el nombre del espacio
+  spaceName?: string;
+  maxGuests?: number; // Añadido para límite de invitados
 }
 
-const BookingModal = ({ isOpen, onClose, spaceName = "espacio" }: BookingModalProps) => {
-  // Añadidas variables de estado
+const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }: BookingModalProps) => {
+  // Variables de estado
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
   const [guestCount, setGuestCount] = useState<number>(0);
+  // Nuevos estados para la hora de entrada y salida
+  const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
+  const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
   
   // Establece español como locale predeterminado
   dayjs.locale('es');
@@ -64,10 +69,10 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio" }: BookingModalPr
               </button>
             </div>
 
-            {/* Layout de dos columnas - CORREGIDO */}
+            {/* Layout de dos columnas */}
             <div className="flex flex-col md:flex-row gap-6 overflow-hidden">
               {/* Columna izquierda: Calendario */}
-              <div className="flex-1 min-w-0 max-w-full"> {/* Añadido min-w-0 y max-w-full */}
+              <div className="flex-1 min-w-0 max-w-full">
                 <h3 className="text-lg font-medium text-gray-700 mb-2">Selecciona tu día</h3>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateCalendar
@@ -134,22 +139,10 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio" }: BookingModalPr
                     }}
                   />
                 </LocalizationProvider>
-              </div>
-
-              {/* Columna derecha: Contador de invitados */}
-              <div className="flex-1 min-w-0 flex flex-col justify-start"> {/* Añadido min-w-0 */}
-                <h3 className="text-lg font-medium text-gray-700 mb-2">Invitados</h3>
-                <p className="text-sm text-gray-500 mb-4">Selecciona el número de personas que asistirán</p>
-                
-                {/* Contador de invitados */}
-                <div className="mt-2 mb-4 overflow-visible"> {/* Añadido overflow-visible */}
-                  <GuestsCounter value={guestCount} onChange={setGuestCount} />
-                </div>
-                
-                {/* Mensaje de confirmación */}
-                {(selectedDate || guestCount > 0) && (
-                  <div className="mt-2 mb-6 p-4 bg-[var(--background-color)] border border-[var(--primary-gray)] rounded-lg text-center max-w-full"> {/* Añadido max-w-full */}
-                    <p className="text-[var(--text)] text-sm break-words"> {/* Añadido break-words */}
+                {/* Mensaje de confirmación actualizado con horas */}
+                {(selectedDate || guestCount > 0 || startTime || endTime) && (
+                  <div className="mt-2 mb-6 p-4 bg-[var(--background-color)] border border-[var(--primary-gray)] rounded-lg text-center max-w-full">
+                    <p className="text-[var(--text)] text-sm break-words">
                       Su reserva del <span className="font-medium text-[var(--primary-red)]">{spaceName}</span> para{' '}
                       <span className="font-medium text-[var(--primary-red)]">
                         {guestCount}
@@ -160,20 +153,136 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio" }: BookingModalPr
                           ? selectedDate.locale('es').format('dddd D [de] MMMM [de] YYYY')
                           : 'seleccionado'}
                       </span>
+                      {(startTime && endTime) && (
+                        <span>
+                          {' '}desde las <span className="font-medium text-[var(--primary-blue)]">
+                            {startTime.format('HH:mm')}
+                          </span> hasta las <span className="font-medium text-[var(--primary-blue)]">
+                            {endTime.format('HH:mm')}
+                          </span>
+                        </span>
+                      )}
                     </p>
                   </div>
                 )}
+              </div>
+
+              {/* Columna derecha: Invitados y Hora */}
+              <div className="flex-1 min-w-0 flex flex-col justify-start">
+                {/* Sección de invitados */}
+                <h3 className="text-lg font-medium text-gray-700">Invitados</h3>
+                <p className="mb-3 text-sm text-gray-500">Selecciona el número de personas que asistirán</p>
+                
+                <div className="overflow-visible">
+                  <GuestsCounter value={guestCount} onChange={setGuestCount} maxValue={maxGuests} />
+                </div>
+                
+                {/* Nueva sección de selección de hora */}
+                <h3 className="text-lg font-medium text-gray-700 mt-4">Horario</h3>
+                <p className="text-sm text-gray-500 mb-3">Selecciona la hora de entrada y salida</p>
+                
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <div className="flex flex-col space-y-4 mb-4">
+                    {/* Selector de hora de entrada */}
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Hora de entrada</p>
+                      <TimePicker
+                        value={startTime}
+                        onChange={(newValue) => {
+                          setStartTime(newValue);
+                          // Si la hora de salida es anterior a la nueva hora de entrada, ajustarla
+                          if (endTime && newValue && endTime.isBefore(newValue)) {
+                            setEndTime(newValue.add(1, 'hour'));
+                          }
+                        }}
+                        sx={{
+                          width: '100%',
+                          '& .MuiOutlinedInput-root': {
+                            borderColor: 'var(--primary-gray)',
+                            '&:hover fieldset, &.Mui-focused fieldset': {
+                              borderColor: 'var(--primary-red) !important',
+                            },
+                          },
+                          '& .MuiInputBase-input': {
+                            color: 'var(--text)',
+                            padding: '10px 14px',
+                          },
+                          '& .MuiSvgIcon-root': {
+                            color: 'var(--primary-blue)',
+                          },
+                          // Estilo para el popover del selector de tiempo
+                          '& .MuiClock-pin': {
+                            backgroundColor: 'var(--primary-red)',
+                          },
+                          '& .MuiClock-hand': {
+                            backgroundColor: 'var(--primary-red)',
+                          },
+                          '& .MuiClockNumber-root.Mui-selected': {
+                            backgroundColor: 'var(--primary-red)',
+                          },
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Selector de hora de salida */}
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Hora de salida</p>
+                      <TimePicker
+                        value={endTime}
+                        onChange={setEndTime}
+                        // Deshabilitar horas anteriores a la hora de entrada
+                        minTime={startTime || undefined}
+                        disabled={!startTime} // Deshabilitar si no hay hora de entrada
+                        sx={{
+                          width: '100%',
+                          '& .MuiOutlinedInput-root': {
+                            borderColor: 'var(--primary-gray)',
+                            '&:hover fieldset, &.Mui-focused fieldset': {
+                              borderColor: 'var(--primary-red) !important',
+                            },
+                            '&.Mui-disabled': {
+                              backgroundColor: 'var(--gray-light)',
+                              opacity: 0.7,
+                            },
+                          },
+                          '& .MuiInputBase-input': {
+                            color: 'var(--text)',
+                            padding: '10px 14px',
+                            '&.Mui-disabled': {
+                              color: 'var(--primary-gray)',
+                            },
+                          },
+                          '& .MuiSvgIcon-root': {
+                            color: 'var(--primary-blue)',
+                            '&.Mui-disabled': {
+                              color: 'var(--primary-gray)',
+                            },
+                          },
+                          // Estilo para el popover del selector de tiempo
+                          '& .MuiClock-pin': {
+                            backgroundColor: 'var(--primary-red)',
+                          },
+                          '& .MuiClock-hand': {
+                            backgroundColor: 'var(--primary-red)',
+                          },
+                          '& .MuiClockNumber-root.Mui-selected': {
+                            backgroundColor: 'var(--primary-red)',
+                          },
+                        }}
+                      />
+                    </div>
+                  </div>
+                </LocalizationProvider>
 
                 {/* Espaciador para alinear el botón al fondo */}
                 <div className="flex-grow"></div>
-                
-                {/* Botones de acción */}
-                <div className="mt-6 flex justify-end space-x-3">
+              </div>
+            </div>
+            {/* Botones de acción */}
+                <div className="flex justify-center space-x-3">
                   <Button text='Cancelar' onClick={onClose}/>
                   <Button text='Reservar'/>
                 </div>
-              </div>
-            </div>
           </motion.div>
         </div>
       )}
