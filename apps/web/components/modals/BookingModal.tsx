@@ -256,61 +256,15 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
                 </div>
               </div>
               
-              {/* Sección de cédulas de invitados */}
-              {guestCount > 0 && (
-                <div className="mt-4 border border-[var(--primary-gray)] rounded-lg p-4 bg-[var(--background-color)]">
-                  <h3 className="text-lg font-medium text-gray-700 mb-2">Información de invitados</h3>
-                  <p className="text-sm text-gray-500 mb-3">
-                    {guestCount === 1 
-                      ? "No es necesario ingresar información adicional"
-                      : "Ingresa las cédulas de los invitados adicionales"
-                    }
-                  </p>
-                  
-                  {guestCount > 1 && (
-                    <div className="max-h-[200px] overflow-y-auto pr-2">
-                      {/* Nota informativa sobre el invitado principal */}
-                      <div className="mb-3 p-2 bg-[var(--gray-light)] rounded-md">
-                        <p className="text-sm text-gray-600">
-                          <span className="font-medium text-[var(--primary-blue)]">Invitado principal:</span> Se utilizará tu información registrada en el sistema.
-                        </p>
-                      </div>
-
-                      {/* Campos dinámicos para invitados adicionales */}
-                      {Array.from({ length: guestCount - 1 }).map((_, index) => (
-                        <div key={index} className="mb-3 flex items-center">
-                          <div className="flex-grow">
-                            <p className="text-sm font-medium text-gray-600">
-                              Invitado {index + 2}
-                            </p>
-                            <input
-                              type="text"
-                              placeholder={`Cédula del invitado ${index + 2}`}
-                              className="w-full p-2 border border-[var(--primary-gray)] rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary-red)]"
-                              onChange={(e) => {
-                                const newGuests = [...guestIdentifications];
-                                newGuests[index + 1] = e.target.value; // Mantenemos index+1 porque la posición 0 sigue siendo para el usuario principal
-                                setGuestIdentifications(newGuests);
-                              }}
-                              value={guestIdentifications[index + 1] || ''}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
               {/* Mensaje de confirmación actualizado con horas */}
-              {(selectedDate || guestCount > 0 || startTime || endTime) && (
+              {(selectedDate || guestCount >= 0 || startTime || endTime) && (
                 <div className="mt-2 mb-6 p-4 bg-[var(--background-color)] border border-[var(--primary-gray)] rounded-lg text-center max-w-full">
                   <p className="text-[var(--text)] text-sm break-words">
                     Su reserva del <span className="font-medium text-[var(--primary-red)]">{spaceName}</span> para{' '}
                     <span className="font-medium text-[var(--primary-red)]">
-                      {guestCount}
+                      {guestCount + 1} {/* +1 para incluirte a ti */}
                     </span>{' '}
-                    {guestCount === 1 ? 'persona' : 'personas'} será realizada para el día{' '}
+                    {guestCount + 1 === 1 ? 'persona' : 'personas'} será realizada para el día{' '}
                     <span className="font-medium text-[var(--primary-blue)]">
                       {selectedDate 
                         ? selectedDate.locale('es').format('dddd D [de] MMMM [de] YYYY')
@@ -326,6 +280,40 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
                       </span>
                     )}
                   </p>
+                </div>
+              )}
+
+              {/* Sección de cédulas de invitados */}
+              {guestCount > 0 && ( // Solo mostrar si hay invitados adicionales
+                <div className="mt-4 border border-[var(--primary-gray)] rounded-lg p-4 bg-[var(--background-color)]">
+                  <h3 className="text-lg font-medium text-gray-700 mb-2">Información de invitados</h3>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Ingresa las cédulas de los invitados adicionales
+                  </p>
+                  
+                  <div className="max-h-[200px] overflow-y-auto pr-2">
+                    {/* Campos dinámicos para invitados adicionales */}
+                    {Array.from({ length: guestCount }).map((_, index) => (
+                      <div key={index} className="mb-3 flex items-center">
+                        <div className="flex-grow">
+                          <p className="text-sm font-medium text-gray-600">
+                            Invitado {index + 1}
+                          </p>
+                          <input
+                            type="text"
+                            placeholder={`Cédula del invitado ${index + 1}`}
+                            className="w-full p-2 border border-[var(--primary-gray)] rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary-red)]"
+                            onChange={(e) => {
+                              const newGuests = [...guestIdentifications];
+                              newGuests[index] = e.target.value; // Ahora no necesitamos offset
+                              setGuestIdentifications(newGuests);
+                            }}
+                            value={guestIdentifications[index] || ''}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
