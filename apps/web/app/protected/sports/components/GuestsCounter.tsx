@@ -1,14 +1,16 @@
+import React from 'react';
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface GuestsCounterProps {
   value: number;
   onChange: (count: number) => void;
+  maxValue?: number;
 }
 
-function GuestsCounter({ value, onChange }: GuestsCounterProps) {
+function GuestsCounter({ value, onChange, maxValue = 10 }: GuestsCounterProps) {
   const increment = () => {
-    onChange(Math.min(value + 1, 10)); // Limitamos a un máximo de 10 invitados
+    onChange(Math.min(value + 1, maxValue));
   };
 
   const decrement = () => {
@@ -47,11 +49,11 @@ function GuestsCounter({ value, onChange }: GuestsCounterProps) {
       <button 
         onClick={increment} 
         className={`text-xl hover:scale-110 transition-transform ${
-          value === 10 
+          value === maxValue
             ? 'text-[var(--secondary-light-red)] opacity-50 cursor-not-allowed' 
             : 'text-[var(--text)] hover:text-[var(--primary-red)] cursor-pointer'
         }`}
-        disabled={value === 10}
+        disabled={value === maxValue}
       >
         <FiPlusCircle />
       </button>
