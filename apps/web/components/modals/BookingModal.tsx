@@ -305,7 +305,7 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
                             className="w-full p-2 border border-[var(--primary-gray)] rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary-red)]"
                             onChange={(e) => {
                               const newGuests = [...guestIdentifications];
-                              newGuests[index] = e.target.value; // Ahora no necesitamos offset
+                              newGuests[index] = e.target.value;
                               setGuestIdentifications(newGuests);
                             }}
                             value={guestIdentifications[index] || ''}
@@ -318,7 +318,7 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
               )}
             </div>
 
-            {/* Botones de acción - siempre visibles al final */}
+            {/* Botones de acción */}
             <div className="flex justify-center space-x-3 mt-4 shrink-0">
               <Button text='Cancelar' onClick={onClose}/>
               <Button text='Reservar'/>
