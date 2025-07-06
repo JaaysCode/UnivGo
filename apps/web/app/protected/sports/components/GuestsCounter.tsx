@@ -1,46 +1,57 @@
-import React, { useState } from 'react';
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { motion, AnimatePresence } from 'framer-motion';
-function Counter() {
-  const [count, setCount] = useState(0);
 
+interface GuestsCounterProps {
+  value: number;
+  onChange: (count: number) => void;
+}
+
+function GuestsCounter({ value, onChange }: GuestsCounterProps) {
   const increment = () => {
-    setCount(Math.min(count + 1, 10)); // Limitamos a un máximo de 10 invitados
+    onChange(Math.min(value + 1, 10)); // Limitamos a un máximo de 10 invitados
   };
 
   const decrement = () => {
-    setCount(Math.max(count - 1, 0)); // Evitamos valores negativos
+    onChange(Math.max(value - 1, 0));
   };
+  
   return (
-    <div className="flex items-center mr-5 bg-white p-3 rounded-lg shadow-sm border border-gray-200">      
+    <div className="items-center bg-[var(--background-color)] p-3 rounded-lg shadow-sm border border-[var(--primary-gray)] inline-flex w-auto">      
       <button 
         onClick={decrement} 
-        className={`text-xl hover:scale-110 transition-transform ${count === 0 ? 'text-[var(--primary-red)]' :
-                    'text-black hover:text-[var(--primary-blue)] cursor-pointer'}`}
-        disabled={count === 0}
+        className={`text-xl hover:scale-110 transition-transform ${
+          value === 0 
+            ? 'text-[var(--secondary-light-red)] opacity-50 cursor-not-allowed' 
+            : 'text-[var(--text)] hover:text-[var(--primary-red)] cursor-pointer'
+        }`}
+        disabled={value === 0}
       >
         <FiMinusCircle />
       </button>
-      <div className="w-12 h-8 relative mx-2 flex items-center justify-center">
+      
+      <div className="w-auto min-w-[2rem] h-8 relative mx-2 flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.span
-            key={count}
-            className="absolute text-xl font-medium"
+            key={value}
+            className="absolute text-xl font-medium text-[var(--text)]"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-            {count}
+            {value}
           </motion.span>
         </AnimatePresence>
       </div>      
       
       <button 
         onClick={increment} 
-        className={`text-xl hover:scale-110 transition-transform ${count === 10 ? 'text-[var(--primary-red)]' :
-                    'text-black hover:text-[var(--primary-blue)] cursor-pointer'}`}
-        disabled={count === 10}
+        className={`text-xl hover:scale-110 transition-transform ${
+          value === 10 
+            ? 'text-[var(--secondary-light-red)] opacity-50 cursor-not-allowed' 
+            : 'text-[var(--text)] hover:text-[var(--primary-red)] cursor-pointer'
+        }`}
+        disabled={value === 10}
       >
         <FiPlusCircle />
       </button>
@@ -48,4 +59,4 @@ function Counter() {
   );
 }
 
-export default Counter;
+export default GuestsCounter;
