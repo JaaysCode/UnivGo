@@ -24,7 +24,8 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
   // Nuevos estados para la hora de entrada y salida
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
-  
+  const [guestIdentifications, setGuestIdentifications] = useState<string[]>(Array(maxGuests).fill(''));
+
   // Establece español como locale predeterminado
   dayjs.locale('es');
 
@@ -55,9 +56,10 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
               stiffness: 300, 
               damping: 30 
             }}
-            className="z-50 w-full max-w-4xl rounded-lg bg-white p-6 shadow-xl overflow-hidden"
+            className="z-50 w-full max-w-4xl max-h-[90vh] rounded-lg bg-white p-6 shadow-xl overflow-hidden flex flex-col"
           >
-            <div className="mb-4 flex justify-between items-center">
+            {/* Encabezado del modal - siempre visible */}
+            <div className="mb-4 flex justify-between items-center shrink-0">
               <h2 className="text-2xl font-bold text-gray-800">Reserva tu espacio</h2>
               <button 
                 onClick={onClose}
@@ -69,220 +71,271 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
               </button>
             </div>
 
-            {/* Layout de dos columnas */}
-            <div className="flex flex-col md:flex-row gap-6 overflow-hidden">
-              {/* Columna izquierda: Calendario */}
-              <div className="flex-1 min-w-0 max-w-full">
-                <h3 className="text-lg font-medium text-gray-700 mb-2">Selecciona tu día</h3>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateCalendar
-                    disablePast
-                    value={selectedDate}
-                    onChange={(newValue) => setSelectedDate(newValue)}
-                    sx={{
-                      // Asegurando tamaño máximo para el calendario
-                      width: '100%',
-                      maxWidth: '100%',
-                      overflowX: 'hidden',
-                      // Día seleccionado
-                      '& .MuiPickersDay-root.Mui-selected': { 
-                        backgroundColor: 'var(--primary-red)',
-                        color: 'white',
-                        '&:hover, &:focus': {
-                          backgroundColor: 'var(--secondary-red)',
+            {/* Contenedor con scroll para el contenido principal */}
+            <div className="overflow-y-auto flex-grow">
+              {/* Layout de dos columnas */}
+              <div className="flex flex-col md:flex-row gap-6 overflow-hidden">
+                {/* Columna izquierda: Calendario */}
+                <div className="flex-1 min-w-0 max-w-full">
+                  <h3 className="text-lg font-medium text-gray-700 mb-2">Selecciona tu día</h3>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateCalendar
+                      disablePast
+                      value={selectedDate}
+                      onChange={(newValue) => setSelectedDate(newValue)}
+                      sx={{
+                        // Asegurando tamaño máximo para el calendario
+                        width: '100%',
+                        maxWidth: '100%',
+                        overflowX: 'hidden',
+                        // Día seleccionado
+                        '& .MuiPickersDay-root.Mui-selected': { 
+                          backgroundColor: 'var(--primary-red)',
+                          color: 'white',
+                          '&:hover, &:focus': {
+                            backgroundColor: 'var(--secondary-red)',
+                          },
                         },
-                      },
-                      // Día seleccionado al pasar el mouse
-                      '& .MuiPickersDay-root.Mui-selected:hover': {
-                        backgroundColor: 'var(--secondary-dark-red)',
-                      },
-                      // Día actual
-                      '& .MuiPickersDay-root.MuiPickersDay-today': {
-                        borderColor: 'var(--primary-blue)',
-                        color: 'var(--primary-dark-blue)',
-                        fontWeight: 'bold',
-                      },
-                      // Día al pasar el mouse
-                      '& .MuiPickersDay-root:hover': {
-                        backgroundColor: 'var(--primary-blue)',
-                        color: 'var(--background)',
-                      },
-                      // Encabezado del mes y año
-                      '& .MuiPickersCalendarHeader-label': {
-                        color: 'var(--text)',
-                        fontWeight: 700,
-                      },
-                      // Flechas de navegación
-                      '& .MuiPickersArrowSwitcher-button': {
-                        color: 'var(--primary-dark-blue)',
-                        '&:hover': {
-                          backgroundColor: 'var(--gray-light)',
-                        }
-                      },
-                      // Días de la semana (L, M, X...)
-                      '& .MuiDayCalendar-weekDayLabel': {
-                        color: 'var(--text-light)',
-                        fontWeight: 500,
-                      },
-                      // Días deshabilitados
-                      '& .MuiPickersDay-root.Mui-disabled': {
-                        color: 'var(--primary-gray)',
-                        backgroundColor: 'transparent',
-                      },
-                      // Fondo del calendario
-                      backgroundColor: 'var(--background-color)',
-                      borderRadius: 2,
-                      boxShadow: 'none',
-                      // Borde del calendario
-                      border: '1px solid var(--primary-gray)',
-                      padding: 1,
-                    }}
-                  />
-                </LocalizationProvider>
-                {/* Mensaje de confirmación actualizado con horas */}
-                {(selectedDate || guestCount > 0 || startTime || endTime) && (
-                  <div className="mt-2 mb-6 p-4 bg-[var(--background-color)] border border-[var(--primary-gray)] rounded-lg text-center max-w-full">
-                    <p className="text-[var(--text)] text-sm break-words">
-                      Su reserva del <span className="font-medium text-[var(--primary-red)]">{spaceName}</span> para{' '}
-                      <span className="font-medium text-[var(--primary-red)]">
-                        {guestCount}
-                      </span>{' '}
-                      {guestCount === 1 ? 'persona' : 'personas'} será realizada para el día{' '}
-                      <span className="font-medium text-[var(--primary-blue)]">
-                        {selectedDate 
-                          ? selectedDate.locale('es').format('dddd D [de] MMMM [de] YYYY')
-                          : 'seleccionado'}
-                      </span>
-                      {(startTime && endTime) && (
-                        <span>
-                          {' '}desde las <span className="font-medium text-[var(--primary-blue)]">
-                            {startTime.format('HH:mm')}
-                          </span> hasta las <span className="font-medium text-[var(--primary-blue)]">
-                            {endTime.format('HH:mm')}
-                          </span>
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Columna derecha: Invitados y Hora */}
-              <div className="flex-1 min-w-0 flex flex-col justify-start">
-                {/* Sección de invitados */}
-                <h3 className="text-lg font-medium text-gray-700">Invitados</h3>
-                <p className="mb-3 text-sm text-gray-500">Selecciona el número de personas que asistirán</p>
-                
-                <div className="overflow-visible">
-                  <GuestsCounter value={guestCount} onChange={setGuestCount} maxValue={maxGuests} />
-                </div>
-                
-                {/* Nueva sección de selección de hora */}
-                <h3 className="text-lg font-medium text-gray-700 mt-4">Horario</h3>
-                <p className="text-sm text-gray-500 mb-3">Selecciona la hora de entrada y salida</p>
-                
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <div className="flex flex-col space-y-4 mb-4">
-                    {/* Selector de hora de entrada */}
-                    <div>
-                      <p className="text-sm font-medium text-gray-600 mb-1">Hora de entrada</p>
-                      <TimePicker
-                        value={startTime}
-                        onChange={(newValue) => {
-                          setStartTime(newValue);
-                          // Si la hora de salida es anterior a la nueva hora de entrada, ajustarla
-                          if (endTime && newValue && endTime.isBefore(newValue)) {
-                            setEndTime(newValue.add(1, 'hour'));
+                        // Día seleccionado al pasar el mouse
+                        '& .MuiPickersDay-root.Mui-selected:hover': {
+                          backgroundColor: 'var(--secondary-dark-red)',
+                        },
+                        // Día actual
+                        '& .MuiPickersDay-root.MuiPickersDay-today': {
+                          borderColor: 'var(--primary-blue)',
+                          color: 'var(--primary-dark-blue)',
+                          fontWeight: 'bold',
+                        },
+                        // Día al pasar el mouse
+                        '& .MuiPickersDay-root:hover': {
+                          backgroundColor: 'var(--primary-blue)',
+                          color: 'var(--background)',
+                        },
+                        // Encabezado del mes y año
+                        '& .MuiPickersCalendarHeader-label': {
+                          color: 'var(--text)',
+                          fontWeight: 700,
+                        },
+                        // Flechas de navegación
+                        '& .MuiPickersArrowSwitcher-button': {
+                          color: 'var(--primary-dark-blue)',
+                          '&:hover': {
+                            backgroundColor: 'var(--gray-light)',
                           }
-                        }}
-                        sx={{
-                          width: '100%',
-                          '& .MuiOutlinedInput-root': {
-                            borderColor: 'var(--primary-gray)',
-                            '&:hover fieldset, &.Mui-focused fieldset': {
-                              borderColor: 'var(--primary-red) !important',
-                            },
-                          },
-                          '& .MuiInputBase-input': {
-                            color: 'var(--text)',
-                            padding: '10px 14px',
-                          },
-                          '& .MuiSvgIcon-root': {
-                            color: 'var(--primary-blue)',
-                          },
-                          // Estilo para el popover del selector de tiempo
-                          '& .MuiClock-pin': {
-                            backgroundColor: 'var(--primary-red)',
-                          },
-                          '& .MuiClock-hand': {
-                            backgroundColor: 'var(--primary-red)',
-                          },
-                          '& .MuiClockNumber-root.Mui-selected': {
-                            backgroundColor: 'var(--primary-red)',
-                          },
-                        }}
-                      />
-                    </div>
-                    
-                    {/* Selector de hora de salida */}
-                    <div>
-                      <p className="text-sm font-medium text-gray-600 mb-1">Hora de salida</p>
-                      <TimePicker
-                        value={endTime}
-                        onChange={setEndTime}
-                        // Deshabilitar horas anteriores a la hora de entrada
-                        minTime={startTime || undefined}
-                        disabled={!startTime} // Deshabilitar si no hay hora de entrada
-                        sx={{
-                          width: '100%',
-                          '& .MuiOutlinedInput-root': {
-                            borderColor: 'var(--primary-gray)',
-                            '&:hover fieldset, &.Mui-focused fieldset': {
-                              borderColor: 'var(--primary-red) !important',
-                            },
-                            '&.Mui-disabled': {
-                              backgroundColor: 'var(--gray-light)',
-                              opacity: 0.7,
-                            },
-                          },
-                          '& .MuiInputBase-input': {
-                            color: 'var(--text)',
-                            padding: '10px 14px',
-                            '&.Mui-disabled': {
-                              color: 'var(--primary-gray)',
-                            },
-                          },
-                          '& .MuiSvgIcon-root': {
-                            color: 'var(--primary-blue)',
-                            '&.Mui-disabled': {
-                              color: 'var(--primary-gray)',
-                            },
-                          },
-                          // Estilo para el popover del selector de tiempo
-                          '& .MuiClock-pin': {
-                            backgroundColor: 'var(--primary-red)',
-                          },
-                          '& .MuiClock-hand': {
-                            backgroundColor: 'var(--primary-red)',
-                          },
-                          '& .MuiClockNumber-root.Mui-selected': {
-                            backgroundColor: 'var(--primary-red)',
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
-                </LocalizationProvider>
-
-                {/* Espaciador para alinear el botón al fondo */}
-                <div className="flex-grow"></div>
-              </div>
-            </div>
-            {/* Botones de acción */}
-                <div className="flex justify-center space-x-3">
-                  <Button text='Cancelar' onClick={onClose}/>
-                  <Button text='Reservar'/>
+                        },
+                        // Días de la semana (L, M, X...)
+                        '& .MuiDayCalendar-weekDayLabel': {
+                          color: 'var(--text-light)',
+                          fontWeight: 500,
+                        },
+                        // Días deshabilitados
+                        '& .MuiPickersDay-root.Mui-disabled': {
+                          color: 'var(--primary-gray)',
+                          backgroundColor: 'transparent',
+                        },
+                        // Fondo del calendario
+                        backgroundColor: 'var(--background-color)',
+                        borderRadius: 2,
+                        boxShadow: 'none',
+                        // Borde del calendario
+                        border: '1px solid var(--primary-gray)',
+                        padding: 1,
+                      }}
+                    />
+                  </LocalizationProvider>
                 </div>
+
+                {/* Columna derecha: Invitados y Hora */}
+                <div className="flex-1 min-w-0 flex flex-col justify-start">
+                  {/* Sección de invitados */}
+                  <h3 className="text-lg font-medium text-gray-700">Invitados</h3>
+                  <p className="mb-3 text-sm text-gray-500">Selecciona el número de personas que asistirán</p>
+                  
+                  <div className="overflow-visible">
+                    <GuestsCounter value={guestCount} onChange={setGuestCount} maxValue={maxGuests} />
+                  </div>
+                  
+                  {/* Nueva sección de selección de hora */}
+                  <h3 className="text-lg font-medium text-gray-700 mt-4">Horario</h3>
+                  <p className="text-sm text-gray-500 mb-3">Selecciona la hora de entrada y salida</p>
+                  
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <div className="flex flex-col space-y-4 mb-4">
+                      {/* Selector de hora de entrada */}
+                      <div>
+                        <p className="text-sm font-medium text-gray-600 mb-1">Hora de entrada</p>
+                        <TimePicker
+                          value={startTime}
+                          onChange={(newValue) => {
+                            setStartTime(newValue);
+                            // Si la hora de salida es anterior a la nueva hora de entrada, ajustarla
+                            if (endTime && newValue && endTime.isBefore(newValue)) {
+                              setEndTime(newValue.add(1, 'hour'));
+                            }
+                          }}
+                          sx={{
+                            width: '100%',
+                            '& .MuiOutlinedInput-root': {
+                              borderColor: 'var(--primary-gray)',
+                              '&:hover fieldset, &.Mui-focused fieldset': {
+                                borderColor: 'var(--primary-red) !important',
+                              },
+                            },
+                            '& .MuiInputBase-input': {
+                              color: 'var(--text)',
+                              padding: '10px 14px',
+                            },
+                            '& .MuiSvgIcon-root': {
+                              color: 'var(--primary-blue)',
+                            },
+                            // Estilo para el popover del selector de tiempo
+                            '& .MuiClock-pin': {
+                              backgroundColor: 'var(--primary-red)',
+                            },
+                            '& .MuiClock-hand': {
+                              backgroundColor: 'var(--primary-red)',
+                            },
+                            '& .MuiClockNumber-root.Mui-selected': {
+                              backgroundColor: 'var(--primary-red)',
+                            },
+                          }}
+                        />
+                      </div>
+                      
+                      {/* Selector de hora de salida */}
+                      <div>
+                        <p className="text-sm font-medium text-gray-600 mb-1">Hora de salida</p>
+                        <TimePicker
+                          value={endTime}
+                          onChange={setEndTime}
+                          // Deshabilitar horas anteriores a la hora de entrada
+                          minTime={startTime || undefined}
+                          disabled={!startTime} // Deshabilitar si no hay hora de entrada
+                          sx={{
+                            width: '100%',
+                            '& .MuiOutlinedInput-root': {
+                              borderColor: 'var(--primary-gray)',
+                              '&:hover fieldset, &.Mui-focused fieldset': {
+                                borderColor: 'var(--primary-red) !important',
+                              },
+                              '&.Mui-disabled': {
+                                backgroundColor: 'var(--gray-light)',
+                                opacity: 0.7,
+                              },
+                            },
+                            '& .MuiInputBase-input': {
+                              color: 'var(--text)',
+                              padding: '10px 14px',
+                              '&.Mui-disabled': {
+                                color: 'var(--primary-gray)',
+                              },
+                            },
+                            '& .MuiSvgIcon-root': {
+                              color: 'var(--primary-blue)',
+                              '&.Mui-disabled': {
+                                color: 'var(--primary-gray)',
+                              },
+                            },
+                            // Estilo para el popover del selector de tiempo
+                            '& .MuiClock-pin': {
+                              backgroundColor: 'var(--primary-red)',
+                            },
+                            '& .MuiClock-hand': {
+                              backgroundColor: 'var(--primary-red)',
+                            },
+                            '& .MuiClockNumber-root.Mui-selected': {
+                              backgroundColor: 'var(--primary-red)',
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </LocalizationProvider>
+                  {/* Espaciador para alinear el botón al fondo */}
+                  <div className="flex-grow"></div>
+                </div>
+              </div>
+              
+              {/* Sección de cédulas de invitados */}
+              {guestCount > 0 && (
+                <div className="mt-4 border border-[var(--primary-gray)] rounded-lg p-4 bg-[var(--background-color)]">
+                  <h3 className="text-lg font-medium text-gray-700 mb-2">Información de invitados</h3>
+                  <p className="text-sm text-gray-500 mb-3">
+                    {guestCount === 1 
+                      ? "No es necesario ingresar información adicional"
+                      : "Ingresa las cédulas de los invitados adicionales"
+                    }
+                  </p>
+                  
+                  {guestCount > 1 && (
+                    <div className="max-h-[200px] overflow-y-auto pr-2">
+                      {/* Nota informativa sobre el invitado principal */}
+                      <div className="mb-3 p-2 bg-[var(--gray-light)] rounded-md">
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium text-[var(--primary-blue)]">Invitado principal:</span> Se utilizará tu información registrada en el sistema.
+                        </p>
+                      </div>
+
+                      {/* Campos dinámicos para invitados adicionales */}
+                      {Array.from({ length: guestCount - 1 }).map((_, index) => (
+                        <div key={index} className="mb-3 flex items-center">
+                          <div className="flex-grow">
+                            <p className="text-sm font-medium text-gray-600">
+                              Invitado {index + 2}
+                            </p>
+                            <input
+                              type="text"
+                              placeholder={`Cédula del invitado ${index + 2}`}
+                              className="w-full p-2 border border-[var(--primary-gray)] rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary-red)]"
+                              onChange={(e) => {
+                                const newGuests = [...guestIdentifications];
+                                newGuests[index + 1] = e.target.value; // Mantenemos index+1 porque la posición 0 sigue siendo para el usuario principal
+                                setGuestIdentifications(newGuests);
+                              }}
+                              value={guestIdentifications[index + 1] || ''}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Mensaje de confirmación actualizado con horas */}
+              {(selectedDate || guestCount > 0 || startTime || endTime) && (
+                <div className="mt-2 mb-6 p-4 bg-[var(--background-color)] border border-[var(--primary-gray)] rounded-lg text-center max-w-full">
+                  <p className="text-[var(--text)] text-sm break-words">
+                    Su reserva del <span className="font-medium text-[var(--primary-red)]">{spaceName}</span> para{' '}
+                    <span className="font-medium text-[var(--primary-red)]">
+                      {guestCount}
+                    </span>{' '}
+                    {guestCount === 1 ? 'persona' : 'personas'} será realizada para el día{' '}
+                    <span className="font-medium text-[var(--primary-blue)]">
+                      {selectedDate 
+                        ? selectedDate.locale('es').format('dddd D [de] MMMM [de] YYYY')
+                        : 'seleccionado'}
+                    </span>
+                    {(startTime && endTime) && (
+                      <span>
+                        {' '}desde las <span className="font-medium text-[var(--primary-blue)]">
+                          {startTime.format('HH:mm')}
+                        </span> hasta las <span className="font-medium text-[var(--primary-blue)]">
+                          {endTime.format('HH:mm')}
+                        </span>
+                      </span>
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Botones de acción - siempre visibles al final */}
+            <div className="flex justify-center space-x-3 mt-4 shrink-0">
+              <Button text='Cancelar' onClick={onClose}/>
+              <Button text='Reservar'/>
+            </div>
+            
           </motion.div>
         </div>
       )}
