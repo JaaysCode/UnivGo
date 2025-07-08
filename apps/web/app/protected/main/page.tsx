@@ -10,7 +10,6 @@ import { IoIosBasketball } from "react-icons/io";
 export default function Main() {
   const [showChoiceModal, setShowChoiceModal] = useState(false);
 
-  
   return (
     <>
       <Navbar />
