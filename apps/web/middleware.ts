@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+const secret = new TextEncoder().encode(process.env.JWT_SECRET || "fallback-secret-key-for-development");
 
 export async function middleware(request: NextRequest) {
   const jwt = request.cookies.get("token")?.value;
