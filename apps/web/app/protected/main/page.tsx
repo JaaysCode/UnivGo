@@ -1,8 +1,8 @@
 "use client";
 import Footer from "@/components/footer/Footer";
 import { Navbar } from "@/components/navbar/Navbar";
-import OptionCard from "../../../components/OptionCard";
-import ChoiceModal from "@/components/modals/choice-modal/ChoiceModal";
+import OptionCard from "../../../src/shared/components/ui/OptionCard";
+import ChoiceModal from "@/src/shared/components/ui/choice-modal/ChoiceModal";
 import React, { useState } from "react";
 import { FaBuilding } from "react-icons/fa";
 import { IoIosBasketball } from "react-icons/io";

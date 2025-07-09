@@ -5,21 +5,13 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
-  @PrimaryGeneratedColumn()
-  id: number;
 
-  @Column({ unique: true, nullable: false })
-  identification: string;
   @Column({ unique: true, nullable: false })
   identification: string;
 
   @Column()
   name: string;
-  @Column()
-  name: string;
 
-  @Column({ nullable: false })
-  password: string;
   @Column({ nullable: false })
   password: string;
 

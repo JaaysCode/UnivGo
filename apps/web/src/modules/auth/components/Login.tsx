@@ -1,8 +1,8 @@
 "use client";
-import InputForm from "../../src/shared/components/ui/InputForm";
-import { Button } from "../../src/shared/components/ui/Button";
-import Logo from "../../src/shared/components/common/Logo";
-import Checkbox from "../../src/shared/components/ui/Checkbox";
+import InputForm from "../InputForm";
+import { Button } from "../Button";
+import Logo from "../Logo";
+import Checkbox from "../Checkbox";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
