@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
-import Logo from "../../src/modules/shared/components/common/Logo";
+
 import { NavButton } from "./NavButton";
 import { Profile } from "./Profile";
 import { usePathname } from "next/navigation";
+import Logo from "../../common/Logo";
 
 // Example dropdown items for Profile component
 const profileDropdownItems = [

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '../Button';
+
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'; // Añadir este import
@@ -9,6 +9,7 @@ import GuestsCounter from '@/app/protected/sports/components/GuestsCounter';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import { Button } from '@/src/shared/components/ui/Button';
 
 interface BookingModalProps {
   isOpen: boolean;

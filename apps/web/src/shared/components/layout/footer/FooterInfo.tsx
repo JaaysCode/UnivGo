@@ -1,6 +1,7 @@
 import React from "react";
-import Ulogo from "../../src/modules/shared/components/common/Logo";
-import CustomLink from "../CustomLink";
+import CustomLink from "../../common/CustomLink";
+import Logo from "../../common/Logo";
+
 
 const FooterInfo = () => {
   return (
@@ -43,7 +44,7 @@ const FooterInfo = () => {
 
       {/* Columna derecha - Logo */}
       <div className="flex justify-end md:w-1/4">
-        <Ulogo
+        <Logo
           imageSource="/udem_logo_letras.png"
           alt="Logo de La Universidad de Medellín"
           width={300}

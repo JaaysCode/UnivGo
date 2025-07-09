@@ -1,11 +1,12 @@
 "use client";
-import Footer from "@/components/footer/Footer";
-import { Navbar } from "@/components/navbar/Navbar";
+
+import { Navbar } from "@/src/shared/components/layout/navbar/Navbar";
 import OptionCard from "../../../src/shared/components/ui/OptionCard";
 import ChoiceModal from "@/src/shared/components/ui/choice-modal/ChoiceModal";
 import React, { useState } from "react";
 import { FaBuilding } from "react-icons/fa";
 import { IoIosBasketball } from "react-icons/io";
+import Footer from "@/src/shared/components/layout/footer/Footer";
 
 export default function Main() {
   const [showChoiceModal, setShowChoiceModal] = useState(false);

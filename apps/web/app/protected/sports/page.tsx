@@ -1,9 +1,10 @@
 "use client";
 
-import { Navbar } from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
+
+import BookingModal from "@/src/modules/reservations/components/BookingModal";
+import Footer from "@/src/shared/components/layout/footer/Footer";
+import { Navbar } from "@/src/shared/components/layout/navbar/Navbar";
 import OptionCard from "@/src/shared/components/ui/OptionCard";
-import BookingModal from "@/components/modals/BookingModal";
 
 import React, { useState } from "react";
 

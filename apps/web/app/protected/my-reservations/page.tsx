@@ -1,5 +1,6 @@
-import Footer from "@/components/footer/Footer";
-import { Navbar } from "@/components/navbar/Navbar";
+import Footer from "@/src/shared/components/layout/footer/Footer";
+import { Navbar } from "@/src/shared/components/layout/navbar/Navbar";
+
 
 export default function ReservationsPage() {
   return (
