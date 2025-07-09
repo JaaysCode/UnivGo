@@ -1,7 +1,7 @@
 "use client";
 
 
-import BookingModal from "@/src/modules/reservations/components/BookingModal";
+import BookingModal from "@/src/modules/reservations/components/BookingModal/BookingModal";
 import Footer from "@/src/shared/components/layout/footer/Footer";
 import { Navbar } from "@/src/shared/components/layout/navbar/Navbar";
 import OptionCard from "@/src/shared/components/ui/OptionCard";
