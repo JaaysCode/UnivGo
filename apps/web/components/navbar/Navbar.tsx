@@ -18,7 +18,7 @@ const profileDropdownItems = [
 
 // Navigation items
 const navItems = [
-  { text: "Mis reservas", href: "/mis-reservas" },
+  { text: "Mis reservas", href: "/protected/my-reservations" },
   { text: "Espacios", href: "/espacios" },
 ];
 

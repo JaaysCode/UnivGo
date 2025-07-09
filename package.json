@@ -32,6 +32,7 @@
     "@mui/x-date-pickers": "^8.5.2",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.18.1",
-    "motion": "^12.18.1"
+    "motion": "^12.18.1",
+    "react-qr-code": "^2.0.18"
   }
 }
