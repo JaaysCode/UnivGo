@@ -18,7 +18,7 @@ export const useCreateReservation = () => {
       selectedDate: dayjs.Dayjs | null;
       startTime: dayjs.Dayjs | null;
       endTime: dayjs.Dayjs | null;
-      user: { identification: string }; // Replace with the actual user type if available
+      user: { identification?: string } | null; // Replace with the actual user type if available
     }
   ) => {
     setIsLoading(true);
@@ -34,7 +34,7 @@ export const useCreateReservation = () => {
       return null;
     }
 
-    if (validationData.endTime < validationData.startTime) {
+    if (validationData.endTime.isBefore(validationData.startTime)) {
       toast.error(
         "La hora de salida no puede ser anterior a la hora de entrada."
       );
