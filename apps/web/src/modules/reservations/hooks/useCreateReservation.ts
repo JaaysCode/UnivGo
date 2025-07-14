@@ -1,5 +1,6 @@
 "use client";
 
+import dayjs from "dayjs";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -14,16 +15,15 @@ export const useCreateReservation = () => {
   const handleCreateReservation = async (
     reservationData: ReservationData,
     validationData: {
-      selectedDate: Date;
-      startTime: Date;
-      endTime: Date;
+      selectedDate: dayjs.Dayjs | null;
+      startTime: dayjs.Dayjs | null;
+      endTime: dayjs.Dayjs | null;
       user: { identification: string }; // Replace with the actual user type if available
     }
   ) => {
     setIsLoading(true);
     setError(null);
 
-    // Validaciones movidas del BookingModal
     if (
       !validationData.selectedDate ||
       !validationData.startTime ||
