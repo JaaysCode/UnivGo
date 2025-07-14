@@ -1,12 +1,11 @@
 "use client";
 
-
-import BookingModal from "@/src/modules/reservations/components/BookingModal/BookingModal";
+import BookingModal from "@/src/modules/reservations/components/booking-modal/BookingModal";
 import Footer from "@/src/shared/components/layout/footer/Footer";
 import { Navbar } from "@/src/shared/components/layout/navbar/Navbar";
 import OptionCard from "@/src/shared/components/ui/OptionCard";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function SportsPage() {
   const [modalOpen, setModalOpen] = useState(false);

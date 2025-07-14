@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 
-import { NavButton } from "./NavButton";
-import { Profile } from "./Profile";
 import { usePathname } from "next/navigation";
 import Logo from "../../common/Logo";
+import { NavButton } from "./NavButton";
+import { Profile } from "./Profile";
 
 // Example dropdown items for Profile component
 const profileDropdownItems = [
@@ -19,7 +19,7 @@ const profileDropdownItems = [
 
 // Navigation items
 const navItems = [
-  { text: "Mis reservas", href: "/mis-reservas" },
+  { text: "Mis reservas", href: "/protected/my-reservations" },
   { text: "Espacios", href: "/espacios" },
 ];
 
@@ -137,10 +137,9 @@ export const Navbar = () => {
               href={item.href}
               className={`
                 block px-3 py-2 rounded-md text-base font-medium 
-                ${
-                  pathname === item.href
-                    ? "text-white bg-white/20"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
+                ${pathname === item.href
+                  ? "text-white bg-white/20"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
                 }
               `}
             >

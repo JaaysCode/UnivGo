@@ -1,9 +1,7 @@
-import { Transform } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
   IsDateString,
-  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -14,9 +12,9 @@ export class CreateReservationDto {
   @IsNotEmpty()
   identification: string;
 
-  @IsInt()
-  @Transform(({ value }) => parseInt(value as string, 10))
-  spaceId: number;
+  @IsString()
+  @IsNotEmpty()
+  spaceName: string;
 
   @IsDateString()
   reservationDate: string;

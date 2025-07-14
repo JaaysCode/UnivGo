@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as crypto from 'crypto';
 import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm/repository/Repository';
+import { Repository } from 'typeorm';
 import { SpacesService } from '../spaces/spaces.service';
 import { UsersService } from '../users/users.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -32,11 +32,13 @@ export class ReservationsService {
       );
     }
 
-    const space = await this.spaceService.findOne(createReservationDto.spaceId);
+    const space = await this.spaceService.findOneByName(
+      createReservationDto.spaceName.trim(),
+    );
 
     if (!space) {
       throw new BadRequestException(
-        `Space with ID ${createReservationDto.spaceId} does not exist.`,
+        `Space with name ${createReservationDto.spaceName.trim()} does not exist.`,
       );
     }
 
@@ -68,10 +70,10 @@ export class ReservationsService {
       );
     }
 
-    const { identification, spaceId, reservationDate, startTime, endTime } =
+    const { identification, reservationDate, startTime, endTime } =
       createReservationDto;
 
-    const rawData = `${identification}-${spaceId}-${reservationDate}-${startTime}-${endTime}`;
+    const rawData = `${identification}-${space.id}-${reservationDate}-${startTime}-${endTime}`;
 
     const qrCodeData = crypto
       .createHash('sha256')
@@ -81,7 +83,7 @@ export class ReservationsService {
 
     const reservation = this.reservationRepository.create({
       userId: user.id,
-      spaceId: createReservationDto.spaceId,
+      spaceId: space.id,
       reservationDate: createReservationDto.reservationDate,
       startTime: createReservationDto.startTime,
       endTime: createReservationDto.endTime,

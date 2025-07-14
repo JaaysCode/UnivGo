@@ -2,6 +2,7 @@ type ButtonProps = {
   text: string;
   onClick?: () => void;
   href?: string;
+  disabled?: boolean;
 };
 
 export const Button = ({ text, onClick, href }: ButtonProps) => {

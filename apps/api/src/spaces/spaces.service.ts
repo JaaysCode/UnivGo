@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ILike } from 'typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { Space } from './entities/space.entity';
 
@@ -10,7 +11,9 @@ export class SpacesService {
     private spacesRepository: Repository<Space>,
   ) {}
 
-  findOne(id: number) {
-    return this.spacesRepository.findOneBy({ id });
+  async findOneByName(name: string): Promise<Space | null> {
+    return await this.spacesRepository.findOne({
+      where: { name: ILike(name) },
+    });
   }
 }

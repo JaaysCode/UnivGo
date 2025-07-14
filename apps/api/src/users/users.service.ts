@@ -15,8 +15,13 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  findOneByIdentification(identification: string) {
-    return this.usersRepository.findOneBy({ identification });
+  async findOneByIdentification(identification: string): Promise<User | null> {
+    try {
+      return await this.usersRepository.findOneBy({ identification });
+    } catch (error) {
+      console.error('Error finding user by identification:', error);
+      return null;
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

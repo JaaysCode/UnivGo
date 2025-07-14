@@ -1,12 +1,12 @@
 "use client";
+
+import { useAuth } from '@/src/modules/auth/hooks/useAuth';
+import { Button } from '@/src/shared/components/ui/Button';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { toast } from 'react-hot-toast';
-
-
-import { Button } from '@/src/shared/components/ui/Button';
+import { useCreateReservation } from '../../hooks/useCreateReservation';
 import { BookingConfirmation } from './components/BookingConfirmation';
 import { DateSelector } from './components/DateSelector';
 import { GuestIdentificationForm } from './components/GuestIdentificationForm';
@@ -26,12 +26,41 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
   const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
   const [guestIdentifications, setGuestIdentifications] = useState<string[]>(Array(maxGuests).fill(''));
+  const { createReservation, isLoading } = useCreateReservation();
+  const { user } = useAuth();
+
+  const handleBooking = async () => {
+    const reservationData = {
+      identification: user?.identification || "",
+      spaceName,
+      reservationDate: selectedDate?.format('YYYY-MM-DD') || "",
+      startTime: startTime?.format('HH:mm:ss') || "",
+      endTime: endTime?.format('HH:mm:ss') || "",
+      guestsIdentifications: guestIdentifications.slice(0, guestCount).filter(id => id.trim() !== "")
+    };
+
+    const validationData = {
+      selectedDate,
+      startTime,
+      endTime,
+      user
+    };
+
+    const result = await createReservation(reservationData, validationData);
+
+    if (result) {
+      onClose();
+    }
+  };
 
   dayjs.locale('es');
 
   const handleStartTimeChange = (newValue: dayjs.Dayjs | null) => {
     setStartTime(newValue);
-    toast.error("La hora de salida no puede ser anterior a la hora de entrada.");
+    // Si la nueva hora de inicio es después de la hora de fin, resetea la hora de fin
+    if (newValue && endTime && newValue.isAfter(endTime)) {
+      setEndTime(null);
+    }
   };
 
   const handleGuestIdentificationChange = (identifications: string[]) => {
@@ -131,8 +160,11 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
 
             <div className='flex justify-center space-x-3 mt-4 shrink'>
               <Button text='Cancelar' onClick={onClose}></Button>
-              <Button text='Reservar' ></Button>
-
+              <Button
+                text={isLoading ? 'Reservando...' : 'Reservar'}
+                onClick={handleBooking}
+                disabled={isLoading}
+              />
             </div>
           </motion.div>
         </div>
