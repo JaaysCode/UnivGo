@@ -90,10 +90,8 @@ export class ReservationsService {
       qrCodeData,
     });
 
-    // Guardar la reserva primero
     const savedReservation = await this.reservationRepository.save(reservation);
 
-    // Guardar los invitados en la tabla reservation_guests
     if (guests.length > 0) {
       const reservationGuests = guests.map((guest) =>
         this.reservationGuestRepository.create({
@@ -119,6 +117,24 @@ export class ReservationsService {
   async findAll(): Promise<Reservation[]> {
     return await this.reservationRepository.find({
       relations: ['user', 'space', 'guests'],
+    });
+  }
+
+  async findByUserIdentification(
+    identification: string,
+  ): Promise<Reservation[]> {
+    const user = await this.userService.findOneByIdentification(identification);
+
+    if (!user) {
+      throw new BadRequestException(
+        `User with identification ${identification} does not exist.`,
+      );
+    }
+
+    return await this.reservationRepository.find({
+      where: { userId: user.id },
+      relations: ['user', 'space', 'guests'],
+      order: { createdAt: 'DESC' },
     });
   }
 
