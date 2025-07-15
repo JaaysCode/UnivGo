@@ -8,23 +8,44 @@ export interface ReservationData {
   guestsIdentifications?: string[];
 }
 
-export const createReservation = async (reservationData: ReservationData) => {
-  const API_URL = "http://localhost:3001/api/reservations";
+const API_URL = "http://localhost:3001/api/reservations";
 
+const getAuthHeaders = () => {
   const token = Cookies.get("token");
+  return {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+};
+
+export const createReservation = async (reservationData: ReservationData) => {
+  const headers = getAuthHeaders();
 
   const response = await fetch(API_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
+    headers: headers,
     body: JSON.stringify(reservationData),
   });
 
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(`Error creating reservation: ${errorData.message}`);
+  }
+
+  return response.json();
+};
+
+export const getUserReservations = async (userIdentification: string) => {
+  const headers = getAuthHeaders();
+
+  const response = await fetch(`${API_URL}/user/${userIdentification}`, {
+    method: "GET",
+    headers: headers,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Error fetching user reservations: ${errorData.message}`);
   }
 
   return response.json();

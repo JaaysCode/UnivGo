@@ -4,43 +4,48 @@ import { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaQrcode, FaUsers } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
 
-// Tipos para la reserva
 export interface ReservationGuest {
     id: number;
-    guestIdentification?: string;
+    guestIdentification: string;
     guestName?: string;
+    reservationId?: number;
+    reservation?: {
+        id: number;
+    };
 }
 
-export interface ReservationProps {
+export interface Space {
+    id: number;
+    name: string;
+    capacity: number;
+}
+
+export interface User {
+    id: number;
+    identification: string;
+    name: string;
+}
+
+interface ReservationProps {
     id: number;
     qrCodeData: string;
-    userId: number;
-    spaceId: number;
+    space?: Space;  // Opcional para compatibilidad
+    spaceId?: number;  // Opcional para compatibilidad con estructura anterior
+    userId?: number;  // Opcional para compatibilidad con estructura anterior
     reservationDate: string;
     startTime: string;
     endTime: string;
-    status: 'pending' | 'confirmed' | 'cancelled_by_admin' | 'cancelled_by_user' | 'completed';
-    createdAt: string;
-    updatedAt: string;
+    status: 'confirmed' | 'pending' | 'cancelled_by_admin' | 'cancelled_by_user' | 'completed';
     guests: ReservationGuest[];
     onCancel?: (id: number) => void;
+    createdAt?: string;  // Opcional
+    updatedAt?: string;  // Opcional
 }
-
-// Mapeo de IDs de espacios a nombres
-const SPACE_NAMES: Record<number, string> = {
-    1: "Gimnasio",
-    2: "Cancha de grama sintética fútbol 11",
-    3: "Cancha de baloncesto",
-    4: "Coliseo",
-    5: "Piscina Olímpica",
-    6: "Cancha de tenis",
-    7: "Sala de ping pong",
-    8: "Cancha múltiple"
-};
 
 export default function Reservation({
     id,
     qrCodeData,
+    space,
     spaceId,
     reservationDate,
     startTime,
@@ -51,8 +56,20 @@ export default function Reservation({
 }: ReservationProps) {
     const [showQR, setShowQR] = useState(false);
 
-    // Obtener el nombre del espacio basado en el ID
-    const spaceName = SPACE_NAMES[spaceId] || `Espacio #${spaceId}`;
+    // Mapeo temporal para compatibilidad con estructura anterior
+    const SPACE_NAMES: Record<number, string> = {
+        1: "Gimnasio",
+        2: "Cancha de grama sintética fútbol 11",
+        3: "Cancha de baloncesto",
+        4: "Coliseo",
+        5: "Piscina Olímpica",
+        6: "Cancha de tenis",
+        7: "Sala de ping pong",
+        8: "Cancha múltiple"
+    };
+
+    // Determinar el nombre del espacio
+    const spaceName = space?.name || (spaceId ? SPACE_NAMES[spaceId] || `Espacio #${spaceId}` : 'Espacio desconocido');
 
     // Formateo de fecha
     const formatDate = (dateString: string) => {
@@ -64,6 +81,20 @@ export default function Reservation({
             day: 'numeric'
         });
     };
+
+    const formatTime = (timeString: string) => {
+
+        if (timeString.match(/^\d{2}:\d{2}$/)) {
+            return timeString;
+        }
+
+        if (timeString.match(/^\d{2}:\d{2}:\d{2}$/)) {
+            return timeString.substring(0, 5); // "14:30:00" -> "14:30"
+        }
+
+        return timeString;
+    };
+
 
     // Determinar color según el estado
     const getStatusColor = () => {
@@ -142,7 +173,7 @@ export default function Reservation({
                             <FaClock className="text-[var(--primary-red)] mt-1 mr-2" />
                             <div>
                                 <span className="block text-sm font-medium">Horario</span>
-                                <span>{startTime} - {endTime}</span>
+                                <span>{formatTime(startTime)} - {formatTime(endTime)}</span>
                             </div>
                         </div>
                     </div>
