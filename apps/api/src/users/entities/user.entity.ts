@@ -15,8 +15,6 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column()
-  role_id: number;
   @Column({ name: 'role_id' })
   roleId: number;
 
