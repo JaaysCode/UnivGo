@@ -116,6 +116,12 @@ export class ReservationsService {
     });
   }
 
+  async findAll(): Promise<Reservation[]> {
+    return await this.reservationRepository.find({
+      relations: ['user', 'space', 'guests'],
+    });
+  }
+
   async update(
     id: number,
     updateReservationDto: UpdateReservationDto,
