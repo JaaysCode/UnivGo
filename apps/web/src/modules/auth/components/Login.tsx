@@ -46,6 +46,11 @@ export function Login() {
       sameSite: "strict",
     });
 
+    toast.success("Iniciando sesión...", {
+      duration: 3000,
+      position: "top-center",
+    });
+
     router.push("/protected/main");
   };
 
