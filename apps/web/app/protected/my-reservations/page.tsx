@@ -1,101 +1,23 @@
 "use client";
-import Reservation, { ReservationProps } from "@/src/modules/reservations/components/my-reservations/Reservation";
+import Reservation from "@/src/modules/reservations/components/my-reservations/Reservation";
+import { useUserReservations } from "@/src/modules/reservations/hooks/useUserReservations";
 import Footer from "@/src/shared/components/layout/footer/Footer";
 import { Navbar } from "@/src/shared/components/layout/navbar/Navbar";
 import { Button } from "@/src/shared/components/ui/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function ReservationsPage() {
-  const [reservations, setReservations] = useState<ReservationProps[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { reservations, loading, error, refetch } = useUserReservations();
   const [filter, setFilter] = useState<string>("all");
-
-  // Simular carga de datos (cambiarlo despues por una llamada a la API)
-  useEffect(() => {
-    // Simular retraso en la carga
-    const timer = setTimeout(() => {
-      // Datos de ejemplo
-      const mockReservations: ReservationProps[] = [
-        {
-          id: 8,
-          qrCodeData: "8e3151df2c331f59",
-          userId: 1,
-          spaceId: 1,
-          reservationDate: "2025-02-15",
-          startTime: "14:00",
-          endTime: "16:00",
-          status: "pending",
-          createdAt: "2025-07-05T19:18:21.176Z",
-          updatedAt: "2025-07-05T19:18:21.176Z",
-          guests: [
-            {
-              id: 2,
-            },
-          ],
-        },
-        {
-          id: 7,
-          qrCodeData: "7a2141ce1b221e48",
-          userId: 1,
-          spaceId: 2,
-          reservationDate: "2025-02-20",
-          startTime: "10:00",
-          endTime: "12:00",
-          status: "confirmed",
-          createdAt: "2025-07-04T15:22:11.176Z",
-          updatedAt: "2025-07-04T15:22:11.176Z",
-          guests: [
-            { id: 3 },
-            { id: 4 },
-            { id: 5 }
-          ],
-        },
-        {
-          id: 6,
-          qrCodeData: "6b1131bd0a111d37",
-          userId: 1,
-          spaceId: 3,
-          reservationDate: "2025-01-10",
-          startTime: "16:00",
-          endTime: "18:00",
-          status: "completed",
-          createdAt: "2025-06-30T11:45:21.176Z",
-          updatedAt: "2025-06-30T11:45:21.176Z",
-          guests: [],
-        },
-        {
-          id: 5,
-          qrCodeData: "5c0121ac9b001c26",
-          userId: 1,
-          spaceId: 1,
-          reservationDate: "2024-12-05",
-          startTime: "09:00",
-          endTime: "11:00",
-          status: "cancelled_by_user",
-          createdAt: "2025-06-25T08:30:21.176Z",
-          updatedAt: "2025-06-26T14:20:21.176Z",
-          guests: [
-            { id: 6 }
-          ],
-        }
-      ];
-
-      setReservations(mockReservations);
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Función para cancelar reserva
   const handleCancelReservation = (id: number) => {
-    // Cuando la API esté implementada, aquí se hace el llamado para cancelar la reserva
+    // TODO: Implementar API call para cancelar reserva
     if (confirm("¿Estás seguro de que deseas cancelar esta reserva?")) {
-      setReservations(prevReservations =>
-        prevReservations.map(res =>
-          res.id === id ? { ...res, status: 'cancelled_by_user' as const } : res
-        )
-      );
+      // Por ahora solo mostramos el mensaje, después se implementará la llamada a la API
+      console.log(`Cancelando reserva ${id}`);
+      // Refrescar la lista después de cancelar
+      refetch();
     }
   };
 
@@ -140,13 +62,30 @@ export default function ReservationsPage() {
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary-red)]"></div>
           </div>
+        ) : error ? (
+          // Mensaje de error
+          <div className="bg-red-50 rounded-lg border border-red-200 p-8 text-center">
+            <h3 className="text-xl font-medium text-red-800 mb-2">Error al cargar las reservas</h3>
+            <p className="text-red-600 mb-6">{error}</p>
+            <Button
+              text="Intentar de nuevo"
+              onClick={refetch}
+            />
+          </div>
         ) : filteredReservations.length > 0 ? (
           // Lista de reservas
           <div>
             {filteredReservations.map(reservation => (
               <Reservation
                 key={reservation.id}
-                {...reservation}
+                id={reservation.id}
+                qrCodeData={reservation.qrCodeData}
+                space={reservation.space}
+                reservationDate={reservation.reservationDate}
+                startTime={reservation.startTime}
+                endTime={reservation.endTime}
+                status={reservation.status}
+                guests={reservation.guests}
                 onCancel={handleCancelReservation}
               />
             ))}
