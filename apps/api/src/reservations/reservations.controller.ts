@@ -1,15 +1,15 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { ReservationsService } from './reservations.service';
 
 @Controller('reservations')
 export class ReservationsController {
@@ -23,6 +23,11 @@ export class ReservationsController {
   @Get()
   findAll() {
     return this.reservationsService.findAll();
+  }
+
+  @Get('user/:identification')
+  findByUserIdentification(@Param('identification') identification: string) {
+    return this.reservationsService.findByUserIdentification(identification);
   }
 
   @Get(':id')
