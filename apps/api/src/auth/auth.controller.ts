@@ -11,6 +11,7 @@ import {
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { SignInDto } from './dto/sign-in.dto';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +19,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('sign-in')
+  @Public()
   signIn(
     @Body()
     signInDto: SignInDto,
