@@ -50,3 +50,19 @@ export const getUserReservations = async (userIdentification: string) => {
 
   return response.json();
 };
+
+export const cancelReservation = async (reservationId: number) => {
+  const headers = getAuthHeaders();
+
+  const response = await fetch(`${API_URL}/${reservationId}`, {
+    method: "PATCH",
+    headers: headers,
+    body: JSON.stringify({ status: "cancelled_by_user" }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Error cancelling reservation: ${errorData.message}`);
+  }
+  return response.json();
+}
