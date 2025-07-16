@@ -6,10 +6,6 @@ export const useCancelReservation = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleCancelReservation = async (reservationId: number) => {
-    if (!confirm("¿Estás seguro de que quieres cancelar esta reserva?")) {
-      return false;
-    }
-
     setIsLoading(true);
 
     try {
