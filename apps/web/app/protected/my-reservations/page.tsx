@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function ReservationsPage() {
   const { reservations, loading, error, refetch } = useUserReservations();
-  const { cancelReservation, isLoading: isCancelling } = useCancelReservation();
+  const { cancelReservation } = useCancelReservation();
   const [filter, setFilter] = useState<string>("all");
 
   // Función para cancelar reserva
