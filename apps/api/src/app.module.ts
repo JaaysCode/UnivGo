@@ -20,16 +20,14 @@ import { AuthGuard } from './auth/auth.guard';
 
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT || '5432'),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
+      url: process.env.DATABASE_URL, // use the Neon connection string from env
+      ssl: {
+        rejectUnauthorized: false, // Important for Neon!
+      },
+      synchronize: true, // Only for dev!
       autoLoadEntities: true,
-      synchronize: true,
     }),
 
-    AuthModule,
     AuthModule,
 
     ReservationsModule,
