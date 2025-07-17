@@ -8,7 +8,7 @@ export interface ReservationData {
   guestsIdentifications?: string[];
 }
 
-const API_URL = "http://localhost:3001/api/reservations";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/reservations`;
 
 const getAuthHeaders = () => {
   const token = Cookies.get("token");
