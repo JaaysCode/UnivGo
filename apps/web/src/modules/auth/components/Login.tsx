@@ -1,12 +1,13 @@
 "use client";
-import InputForm from "../InputForm";
-import { Button } from "../Button";
-import Logo from "../Logo";
-import Checkbox from "../Checkbox";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import toast, { Toaster } from "react-hot-toast";
+import Logo from "@/src/shared/components/common/Logo";
+import InputForm from "@/src/shared/components/ui/InputForm";
+import Checkbox from "@/src/shared/components/ui/Checkbox";
+import { Button } from "@/src/shared/components/ui/Button";
 
 export function Login() {
   const [identification, setIdentification] = useState("");
@@ -43,6 +44,11 @@ export function Login() {
       expires: 1,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+    });
+
+    toast.success("Iniciando sesión...", {
+      duration: 3000,
+      position: "top-center",
     });
 
     router.push("/protected/main");

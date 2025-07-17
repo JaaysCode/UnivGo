@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
-import Logo from "../Logo";
+
+import { usePathname } from "next/navigation";
+import Logo from "../../common/Logo";
 import { NavButton } from "./NavButton";
 import { Profile } from "./Profile";
-import { usePathname } from "next/navigation";
 
 // Example dropdown items for Profile component
 const profileDropdownItems = [
@@ -18,7 +19,7 @@ const profileDropdownItems = [
 
 // Navigation items
 const navItems = [
-  { text: "Mis reservas", href: "/mis-reservas" },
+  { text: "Mis reservas", href: "/protected/my-reservations" },
   { text: "Espacios", href: "/espacios" },
 ];
 
@@ -34,22 +35,23 @@ export const Navbar = () => {
           <div className="flex-shrink-0 flex items-center">
             <button
               onClick={() => {
-              // Use Next.js app router redirect
-              window.location.href = "/protected/main"; // Adjust the path as needed
+                // Use Next.js app router redirect
+                window.location.href = "/protected/main"; // Adjust the path as needed
               }}
               className="flex items-center bg-white rounded-xl p-1.5 hover:shadow-lg transition-shadow duration-300"
               aria-label="Go to home"
               type="button"
             >
               <Logo
-              imageSource="/UnivGo.png"
-              alt="UnivGo logo"
-              width={85}
-              height={85}
-              styles=""
+                imageSource="/UnivGo.png"
+                alt="UnivGo logo"
+                width={85}
+                height={85}
+                styles=""
               />
             </button>
-          </div>          {/* Center: NavButtons (hidden on small screens) */}
+          </div>{" "}
+          {/* Center: NavButtons (hidden on small screens) */}
           <div className="hidden md:flex items-center justify-center space-x-1">
             {navItems.map((item, index) => (
               <NavButton
@@ -60,7 +62,6 @@ export const Navbar = () => {
               />
             ))}
           </div>
-
           {/* Right: Notifications and Profile */}
           <div className="flex items-center space-x-4">
             {/* Notification Button */}
@@ -127,8 +128,8 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {/* Mobile menu (hidden by default) - can be expanded in the future */}      <div className="hidden md:hidden">
+      {/* Mobile menu (hidden by default) - can be expanded in the future */}{" "}
+      <div className="hidden md:hidden">
         <div className="px-2 pt-2 pb-3 space-y-1">
           {navItems.map((item, index) => (
             <Link
@@ -136,10 +137,9 @@ export const Navbar = () => {
               href={item.href}
               className={`
                 block px-3 py-2 rounded-md text-base font-medium 
-                ${
-                  pathname === item.href
-                    ? "text-white bg-white/20"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
+                ${pathname === item.href
+                  ? "text-white bg-white/20"
+                  : "text-white/70 hover:text-white hover:bg-white/10"
                 }
               `}
             >

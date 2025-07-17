@@ -1,7 +1,7 @@
-'use client';
-import React from "react";
+"use client";
+import { Button } from "@/src/shared/components/ui/Button";
 import Image from "next/image";
-import { Button } from "@/components/Button";
+import React from "react";
 
 interface OptionCardProps {
   title: string;
@@ -47,17 +47,23 @@ const OptionCard: React.FC<OptionCardProps> = ({
               `}
               style={{ width: "fit-content", minWidth: "200px" }}
             >
-              <h2 className="text-2xl font-bold text-white mb-2 break-words">{title}</h2>
+              <h2 className="text-2xl font-bold text-white mb-2 break-words">
+                {title}
+              </h2>
               <p className="text-white/90 break-words">{description}</p>
             </div>
           </div>
           <div className="flex items-center justify-center px-4">
-            <Button text={buttonText} onClick={buttonOnClick} href={buttonhref}/>
+            <Button
+              text={buttonText}
+              onClick={buttonOnClick}
+              href={buttonhref}
+            />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default OptionCard;
