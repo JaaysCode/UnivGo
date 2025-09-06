@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import toast, { Toaster } from "react-hot-toast";
 import Logo from "@/src/shared/components/common/Logo";
 import InputForm from "@/src/shared/components/ui/InputForm";
-import Checkbox from "@/ssrc/shared/components/ui/Checkbox";
+import Checkbox from "@/src/shared/components/ui/Checkbox";
 import { Button } from "@/src/shared/components/ui/Button";
 
 export function Login() {
