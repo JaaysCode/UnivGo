@@ -17,19 +17,23 @@ export const Navbar = () => {
   // Function to handle signout
   const handleSignout = () => {
     try {
-      // Remove the authentication cookie
+      // Remove the authentication cookie first
       Cookies.remove("token");
       
-      // Show success message
+      // Show success message with unique ID to prevent duplicates
       toast.success("Sesión cerrada exitosamente", {
+        id: "signout-success", // Unique ID prevents duplicates
         duration: 2000,
         position: "top-center",
       });
 
-      // Redirect to login page
-      router.push("/");
+      // Small delay before redirect to ensure toast is shown
+      setTimeout(() => {
+        router.push("/");
+      }, 100);
     } catch {
       toast.error("Error al cerrar sesión", {
+        id: "signout-error", // Unique ID prevents duplicates
         duration: 3000,
         position: "top-center",
       });

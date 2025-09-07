@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Logo from "@/src/shared/components/common/Logo";
 import InputForm from "@/src/shared/components/ui/InputForm";
 import Checkbox from "@/src/shared/components/ui/Checkbox";
@@ -56,7 +56,6 @@ export function Login() {
 
   return (
     <>
-      <Toaster />
       <div className="flex min-h-screen items-center justify-center bg-[url(/imagen_u_medellin_2.jpg)] bg-cover bg-center bg-fixed bg-no-repeat relative">
         {/* Capa de oscurecimiento con viñeta */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/10"></div>
