@@ -1,32 +1,57 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 import Logo from "../../common/Logo";
 import { NavButton } from "./NavButton";
 import { Profile } from "./Profile";
 
-// Example dropdown items for Profile component
-const profileDropdownItems = [
-  { id: "profile", label: "Your Profile", href: "/profile" },
-  { id: "settings", label: "Settings", href: "/settings" },
-  {
-    id: "signout",
-    label: "Sign out",
-    href: "/",
-  },
-];
-
-// Navigation items
-const navItems = [
-  { text: "Mis reservas", href: "/protected/my-reservations" },
-  { text: "Espacios", href: "/espacios" },
-];
-
 export const Navbar = () => {
   // Use the pathname to determine which nav item is active
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Function to handle signout
+  const handleSignout = () => {
+    try {
+      // Remove the authentication cookie
+      Cookies.remove("token");
+      
+      // Show success message
+      toast.success("Sesión cerrada exitosamente", {
+        duration: 2000,
+        position: "top-center",
+      });
+
+      // Redirect to login page
+      router.push("/");
+    } catch {
+      toast.error("Error al cerrar sesión", {
+        duration: 3000,
+        position: "top-center",
+      });
+    }
+  };
+
+  // Example dropdown items for Profile component
+  const profileDropdownItems = [
+    { id: "profile", label: "Your Profile", href: "/profile" },
+    { id: "settings", label: "Settings", href: "/settings" },
+    {
+      id: "signout",
+      label: "Sign out",
+      onClick: handleSignout,
+    },
+  ];
+
+  // Navigation items
+  const navItems = [
+    { text: "Mis reservas", href: "/protected/my-reservations" },
+    { text: "Espacios", href: "/espacios" },
+  ];
 
   return (
     <nav className="bg-gradient-to-r from-[var(--primary-red)] via-[var(--secondary-dark-red)] to-[var(--primary-red)] shadow-md sticky top-0 z-50">
@@ -51,7 +76,8 @@ export const Navbar = () => {
                 styles="sm:w-[75px] sm:h-[75px] lg:w-[85px] lg:h-[85px]"
               />
             </button>
-          </div>{" "}
+          </div>
+          
           {/* Center: NavButtons (hidden on small screens) */}
           <div className="hidden md:flex items-center justify-center space-x-1">
             {navItems.map((item, index) => (
@@ -63,6 +89,7 @@ export const Navbar = () => {
               />
             ))}
           </div>
+          
           {/* Right: Notifications and Profile */}
           <div className="flex items-center space-x-4">
             {/* Notification Button */}
@@ -72,8 +99,7 @@ export const Navbar = () => {
                          transition-all duration-300 ease-in-out
                          hover:bg-[var(--primary-blue)] 
                          hover:scale-95
-                         focus:outline-none cursor-pointer
-                         "
+                         focus:outline-none cursor-pointer"
               aria-label="View notifications"
             >
               <span className="absolute -inset-1.5"></span>
@@ -146,6 +172,7 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
+      
       {/* Mobile menu */}
       <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 bg-gradient-to-r from-[var(--primary-red)] via-[var(--secondary-dark-red)] to-[var(--primary-red)]">
