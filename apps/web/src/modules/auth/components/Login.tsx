@@ -12,6 +12,7 @@ import { Button } from "@/src/shared/components/ui/Button";
 export function Login() {
   const [identification, setIdentification] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -39,17 +40,24 @@ export function Login() {
     const data = await res.json();
     const token = data.access_token;
 
-    //save bearer token in a cookie
-    Cookies.set("token", token, {
-      expires: 1,
+    // Save bearer token in a cookie with different expiration based on "Remember me"
+    const cookieOptions = {
+      expires: rememberMe ? 30 : 1, // 30 days if remember me, 1 day if not
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+      sameSite: "strict" as const,
+    };
 
-    toast.success("Iniciando sesión...", {
-      duration: 3000,
-      position: "top-center",
-    });
+    Cookies.set("token", token, cookieOptions);
+
+    toast.success(
+      rememberMe 
+        ? "Iniciando sesión... (recordado por 30 días)" 
+        : "Iniciando sesión...", 
+      {
+        duration: 3000,
+        position: "top-center",
+      }
+    );
 
     router.push("/protected/main");
   };
@@ -104,7 +112,12 @@ export function Login() {
                 {/* Opciones adicionales */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
                   {/* Checkbox personalizado */}
-                  <Checkbox id="remember-me" label="Recordarme" />
+                  <Checkbox 
+                    id="remember-me" 
+                    label="Recordarme" 
+                    checked={rememberMe}
+                    onChange={setRememberMe}
+                  />
 
                   <a
                     href=""
