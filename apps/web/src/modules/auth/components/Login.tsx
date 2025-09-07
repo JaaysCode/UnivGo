@@ -68,13 +68,15 @@ export function Login() {
         }
       );
 
+      // Don't set loading to false on success - keep button disabled until redirect
       router.push("/protected/main");
+      return; // Exit early on success
     } catch {
       toast.error("Error de conexión. Intente nuevamente", {
         duration: 3000,
         position: "top-center",
       });
-    } finally {
+      // Only set loading to false on error
       setIsLoading(false);
     }
   };
