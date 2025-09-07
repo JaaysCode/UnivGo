@@ -93,18 +93,17 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
               stiffness: 300,
               damping: 30
             }}
-            className="z-50 w-full max-w-4xl max-h-[90vh] rounded-lg bg-white p-6 shadow-xl overflow-hidden flex flex-col"
+            className="z-50 w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl max-h-[90vh] mx-4 sm:mx-0 rounded-lg bg-white p-4 sm:p-6 shadow-xl overflow-hidden flex flex-col"
           >
             {/* Encabezado del modal - siempre visible */}
             <div className="mb-4 flex justify-between items-center shrink-0">
-              <h2 className="text-2xl font-bold text-gray-800">Reserva tu espacio</h2>
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">Reserva tu espacio</h2>
               <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-gray-700 p-1"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-
                 </svg>
               </button>
             </div>
@@ -112,8 +111,8 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
             {/* Contenedor con scroll para el contenido principal */}
 
             <div className="overflow-y-auto flex-grow">
-              {/* Layout de dos columnas */}
-              <div className="flex flex-col md:flex-row gap-6 overflow-hidden">
+              {/* Layout responsive */}
+              <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 overflow-hidden">
                 {/* Columna izquierda: Calendario */}
                 <div className="flex-1 min-w-0 max-w-full">
                   <DateSelector
@@ -123,7 +122,7 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
                 </div>
 
                 {/* Columna derecha: Invitados y Hora */}
-                <div className="flex-1 min-w-0 flex flex-col justify-start">
+                <div className="flex-1 min-w-0 flex flex-col justify-start space-y-4">
                   <GuestSelector
                     guestCount={guestCount}
                     maxGuests={maxGuests}
@@ -136,8 +135,6 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
                     onStartTimeChange={handleStartTimeChange}
                     onEndTimeChange={setEndTime}
                   />
-
-                  <div className='flex-grow'></div>
                 </div>
               </div>
 
@@ -157,8 +154,7 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
             </div>
 
             {/* Actions */}
-
-            <div className='flex justify-center space-x-3 mt-4 shrink'>
+            <div className='flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 mt-4 shrink-0'>
               <Button text='Cancelar' onClick={onClose}></Button>
               <Button
                 text={isLoading ? 'Reservando...' : 'Reservar'}

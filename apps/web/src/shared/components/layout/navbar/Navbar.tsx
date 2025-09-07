@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "../../common/Logo";
 import { NavButton } from "./NavButton";
@@ -26,6 +26,7 @@ const navItems = [
 export const Navbar = () => {
   // Use the pathname to determine which nav item is active
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <nav className="bg-gradient-to-r from-[var(--primary-red)] via-[var(--secondary-dark-red)] to-[var(--primary-red)] shadow-md sticky top-0 z-50">
@@ -45,9 +46,9 @@ export const Navbar = () => {
               <Logo
                 imageSource="/UnivGo.png"
                 alt="UnivGo logo"
-                width={85}
-                height={85}
-                styles=""
+                width={60}
+                height={60}
+                styles="sm:w-[75px] sm:h-[75px] lg:w-[85px] lg:h-[85px]"
               />
             </button>
           </div>{" "}
@@ -98,24 +99,41 @@ export const Navbar = () => {
             <div className="md:hidden">
               <button
                 type="button"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="inline-flex items-center justify-center p-2 rounded-md text-white 
                            hover:text-white hover:bg-white/10 focus:outline-none"
                 aria-label="Open main menu"
               >
-                <svg
-                  className="block h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
+                {isMobileMenuOpen ? (
+                  <svg
+                    className="block h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="block h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                    />
+                  </svg>
+                )}
               </button>
             </div>
 
@@ -128,15 +146,16 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
-      {/* Mobile menu (hidden by default) - can be expanded in the future */}{" "}
-      <div className="hidden md:hidden">
-        <div className="px-2 pt-2 pb-3 space-y-1">
+      {/* Mobile menu */}
+      <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+        <div className="px-2 pt-2 pb-3 space-y-1 bg-gradient-to-r from-[var(--primary-red)] via-[var(--secondary-dark-red)] to-[var(--primary-red)]">
           {navItems.map((item, index) => (
             <Link
               key={`mobile-nav-${index}`}
               href={item.href}
+              onClick={() => setIsMobileMenuOpen(false)}
               className={`
-                block px-3 py-2 rounded-md text-base font-medium 
+                block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200
                 ${pathname === item.href
                   ? "text-white bg-white/20"
                   : "text-white/70 hover:text-white hover:bg-white/10"

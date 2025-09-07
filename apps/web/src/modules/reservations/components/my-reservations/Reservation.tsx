@@ -161,6 +161,9 @@ export default function Reservation({
     setShowCancelModal(false);
   };
 
+  // Verificar si el QR debería estar disponible
+  const canShowQR = status === "confirmed" || status === "pending";
+
   return (
     <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-4">
       {/* Encabezado con estado */}
@@ -174,13 +177,15 @@ export default function Reservation({
           <span className="ml-3 text-sm text-gray-500">Reserva #{id}</span>
         </div>
         <div>
-          <button
-            onClick={() => setShowQR(!showQR)}
-            className="text-sm text-[var(--primary-blue)] hover:underline flex items-center"
-          >
-            <FaQrcode className="mr-1" />
-            {showQR ? "Ocultar QR" : "Mostrar QR"}
-          </button>
+          {canShowQR && (
+            <button
+              onClick={() => setShowQR(!showQR)}
+              className="text-sm text-[var(--primary-blue)] hover:underline flex items-center"
+            >
+              <FaQrcode className="mr-1" />
+              {showQR ? "Ocultar QR" : "Mostrar QR"}
+            </button>
+          )}
         </div>
       </div>
 
@@ -242,7 +247,7 @@ export default function Reservation({
         </div>
 
         {/* Código QR */}
-        {showQR && (
+        {showQR && canShowQR && (
           <div className="mt-3 p-4 border-t border-gray-200">
             <div className="flex flex-col items-center">
               <div className="text-xs text-gray-500 mb-2">

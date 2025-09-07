@@ -61,29 +61,29 @@ export function Login() {
         {/* Capa de oscurecimiento con viñeta */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/10"></div>
 
-        <div className="w-full max-w-md mx-auto px-4 relative z-10">
+        <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mx-auto px-4 sm:px-6 relative z-10">
           {/* Tarjeta semitransparente */}
           <div className="flex items-center justify-center">
-            <div className="backdrop-blur-md bg-white/75 p-8 sm:p-10 rounded-xl shadow-[0_10px_50px_rgba(0,0,0,0.5)] w-full border border-white/20">
+            <div className="backdrop-blur-md bg-white/75 p-6 sm:p-8 lg:p-10 rounded-xl shadow-[0_10px_50px_rgba(0,0,0,0.5)] w-full border border-white/20">
               {/* Logo centrado */}
-              <div className="flex flex-col items-center mb-6">
+              <div className="flex flex-col items-center mb-4 sm:mb-6">
                 <Logo
                   imageSource="/udem_logo.png"
                   alt="Logo de La Universidad de Medellín"
-                  width={120}
-                  height={120}
-                  styles="mb-6"
+                  width={100}
+                  height={100}
+                  styles="mb-4 sm:mb-6 w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28"
                 />
-                <h1 className="text-2xl font-bold text-[var(--text-color)]">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[var(--text-color)]">
                   UnivGo
                 </h1>
-                <p className="text-sm text-[var(--secondary-text)] text-center mt-1">
+                <p className="text-xs sm:text-sm text-[var(--secondary-text)] text-center mt-1">
                   Tu plataforma universitaria
                 </p>
               </div>
 
               {/* Formulario */}
-              <div className="w-full space-y-6">
+              <div className="w-full space-y-4 sm:space-y-6">
                 <InputForm
                   label="Documento de identidad"
                   id="documentoIdentidad"
@@ -103,25 +103,25 @@ export function Login() {
                 />
 
                 {/* Opciones adicionales */}
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
                   {/* Checkbox personalizado */}
                   <Checkbox id="remember-me" label="Recordarme" />
 
                   <a
                     href=""
-                    className="text-sm font-medium text-[var(--primary-blue)] hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:ring-offset-2 rounded-sm"
+                    className="text-xs sm:text-sm font-medium text-[var(--primary-blue)] hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--primary-blue)] focus:ring-offset-2 rounded-sm"
                   >
                     Olvidé mi Contraseña
                   </a>
                 </div>
 
                 {/* Botón de acceso */}
-                <div className="pt-4 flex justify-center">
+                <div className="pt-2 sm:pt-4 flex justify-center">
                   <Button text="Entrar" onClick={handleLogin} />
                 </div>
 
                 {/* Footer con información de la app */}
-                <div className="border-t border-[var(--primary-gray)] pt-4 mt-6">
+                <div className="border-t border-[var(--primary-gray)] pt-3 sm:pt-4 mt-4 sm:mt-6">
                   <p className="text-xs text-center text-[var(--secondary-text)]">
                     Reserva espacios deportivos, consulta tu información
                     académica y mucho más.

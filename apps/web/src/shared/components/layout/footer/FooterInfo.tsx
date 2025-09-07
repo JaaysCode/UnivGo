@@ -5,18 +5,18 @@ import Logo from "../../common/Logo";
 
 const FooterInfo = () => {
   return (
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full">
+    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center w-full space-y-6 lg:space-y-0 lg:space-x-6">
       {/* Columna izquierda - Información de contacto */}
-      <div className="text-sm space-y-1 md:w-1/4">
-        <p className="font-medium text-base mb-1">Universidad de Medellín</p>
-        <p>+57 (604) 590 45 00 • +57 (604) 590 69 99</p>{" "}
-        <p>
+      <div className="text-xs sm:text-sm space-y-1 lg:w-1/3 w-full">
+        <p className="font-medium text-sm sm:text-base mb-1">Universidad de Medellín</p>
+        <p className="break-words">+57 (604) 590 45 00 • +57 (604) 590 69 99</p>
+        <p className="break-words">
           Sede principal:{" "}
           <CustomLink href="https://maps.app.goo.gl/ZqFGksakWsk1daP4A">
             Carrera 87 N° 30-65, Medellín - Colombia.
           </CustomLink>
         </p>
-        <p>
+        <p className="break-words">
           Sede Bogotá:{" "}
           <CustomLink href="https://maps.app.goo.gl/yb2TSy55T54bfTZj6">
             Calle 57 # 9-52, Chapinero.
@@ -25,14 +25,13 @@ const FooterInfo = () => {
       </div>
 
       {/* Columna central - Política y estatutos */}
-      <div className="flex-grow text-sm text-center flex flex-col justify-center items-center mx-auto space-y-2 md:ml-10 md:mr-8">
-        <p className="text-center">
+      <div className="flex-grow text-xs sm:text-sm text-center flex flex-col justify-center items-center space-y-2 lg:w-1/3 w-full">
+        <p className="text-center break-words">
           Institución de educación superior sujeta a la inspección y vigilancia
-          <br />
+          <br className="hidden sm:block" />
           del Ministerio de Educación Nacional.
         </p>
-        <div className="flex flex-col items-center ">
-          {" "}
+        <div className="flex flex-col items-center space-y-1">
           <CustomLink href="/politicas-datos" target="">
             Política para el Manejo y Tratamiento de Datos Personales
           </CustomLink>
@@ -43,13 +42,13 @@ const FooterInfo = () => {
       </div>
 
       {/* Columna derecha - Logo */}
-      <div className="flex justify-end md:w-1/4">
+      <div className="flex justify-center lg:justify-end lg:w-1/3 w-full">
         <Logo
           imageSource="/udem_logo_letras.png"
           alt="Logo de La Universidad de Medellín"
-          width={300}
-          height={300}
-          styles="mb-1"
+          width={200}
+          height={200}
+          styles="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 max-w-full object-contain"
         />
       </div>
     </div>

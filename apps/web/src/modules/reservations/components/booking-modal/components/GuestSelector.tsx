@@ -9,11 +9,10 @@ interface GuestSelectorProps {
 }
 
 export const GuestSelector = ({ guestCount, maxGuests, onGuestCountChange }: GuestSelectorProps) => {
-
     return (
-        <>
-            <h3 className="text-lg font-medium text-[var(--text)]">Invitados</h3>
-            <p className="mb-3 text-sm text-[var(--text)]">Selecciona el número de personas que asistirán</p>
+        <div className="w-full">
+            <h3 className="text-sm sm:text-base lg:text-lg font-medium text-[var(--text)]">Invitados</h3>
+            <p className="mb-3 text-xs sm:text-sm text-[var(--text)]">Selecciona el número de personas que asistirán</p>
 
             <div className="overflow-visible">
                 <GuestsCounter
@@ -22,7 +21,6 @@ export const GuestSelector = ({ guestCount, maxGuests, onGuestCountChange }: Gue
                     maxValue={maxGuests}
                 />
             </div>
-
-        </>
+        </div>
     )
 }
