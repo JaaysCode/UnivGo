@@ -13,53 +13,70 @@ export function Login() {
   const [identification, setIdentification] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/sign-in`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ identification, password }),
-    });
-
-    if (!res.ok) {
-      if (identification.length === 0 || password.length === 0) {
-        toast.error("Rellene todos los campos solicitados", {
-          duration: 3000,
-          position: "top-center",
-        });
-        return;
-      }
-      toast.error("Usuario o contraseña incorrectos", {
+    // Prevenir múltiples envíos
+    if (isLoading) return;
+    
+    // Validación básica antes de iniciar loading
+    if (identification.length === 0 || password.length === 0) {
+      toast.error("Rellene todos los campos solicitados", {
         duration: 3000,
         position: "top-center",
       });
       return;
     }
 
-    const data = await res.json();
-    const token = data.access_token;
+    setIsLoading(true);
 
-    // Save bearer token in a cookie with different expiration based on "Remember me"
-    const cookieOptions = {
-      expires: rememberMe ? 30 : 1, // 30 days if remember me, 1 day if not
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict" as const,
-    };
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/sign-in`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identification, password }),
+      });
 
-    Cookies.set("token", token, cookieOptions);
+      if (!res.ok) {
+        toast.error("Usuario o contraseña incorrectos", {
+          duration: 3000,
+          position: "top-center",
+        });
+        return;
+      }
 
-    toast.success(
-      rememberMe 
-        ? "Iniciando sesión... (recordado por 30 días)" 
-        : "Iniciando sesión...", 
-      {
+      const data = await res.json();
+      const token = data.access_token;
+
+      // Save bearer token in a cookie with different expiration based on "Remember me"
+      const cookieOptions = {
+        expires: rememberMe ? 30 : 1, // 30 days if remember me, 1 day if not
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict" as const,
+      };
+
+      Cookies.set("token", token, cookieOptions);
+
+      toast.success(
+        rememberMe 
+          ? "Iniciando sesión... (recordado por 30 días)" 
+          : "Iniciando sesión...", 
+        {
+          duration: 3000,
+          position: "top-center",
+        }
+      );
+
+      router.push("/protected/main");
+    } catch {
+      toast.error("Error de conexión. Intente nuevamente", {
         duration: 3000,
         position: "top-center",
-      }
-    );
-
-    router.push("/protected/main");
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -129,7 +146,12 @@ export function Login() {
 
                 {/* Botón de acceso */}
                 <div className="pt-2 sm:pt-4 flex justify-center">
-                  <Button text="Entrar" onClick={handleLogin} />
+                  <Button 
+                    text="Entrar" 
+                    onClick={handleLogin} 
+                    loading={isLoading}
+                    disabled={isLoading}
+                  />
                 </div>
 
                 {/* Footer con información de la app */}
