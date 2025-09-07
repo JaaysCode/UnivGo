@@ -17,9 +17,9 @@ const SocialMediaIcons = () => {
 
     return(
         <div className="flex justify-center w-full">
-            <ul className="flex space-x-2 gap-[25px]">
+            <ul className="flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6 max-w-full">
                 {SocialMediaLinks.map((link, index) => (
-                    <li key={index} className="flex basis-[4.5rem] relative group">
+                    <li key={index} className="flex relative group">
                 
                           <a
                             href={link.href}
@@ -27,12 +27,12 @@ const SocialMediaIcons = () => {
                             rel="noopener noreferrer"
                             className="
                                 relative
-                                p-[5px]
+                                p-2 sm:p-3
                                 flex 
                                 justify-center 
                                 items-center 
                                 aspect-square 
-                                text-[1.75rem]
+                                text-lg sm:text-xl lg:text-2xl
                                 text-white
                                 rounded-full
                                 no-underline
@@ -44,6 +44,8 @@ const SocialMediaIcons = () => {
                                 transition-all
                                 duration-300
                                 hover:scale-110
+                                min-w-[44px]
+                                min-h-[44px]
                             "
                         >
                             <span className="relative z-10">{link.icon}</span>
