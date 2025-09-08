@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useCreateReservation } from '../../hooks/useCreateReservation';
 import { BookingConfirmation } from './components/BookingConfirmation';
 import { DateSelector } from './components/DateSelector';
@@ -17,19 +18,36 @@ interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
   spaceName?: string;
-  maxGuests?: number; // Añadido para límite de invitados
+  maxGuests?: number;
+  horaLimiteInicio: number; // Ej: 6
+  horaLimiteFin: number;   // Ej: 20
+  duracionReserva: number; // Ej: 2 (horas)
+  tipoHora: 'par' | 'impar' | 'any';
 }
 
-const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }: BookingModalProps) => {
+const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10, horaLimiteInicio, horaLimiteFin, duracionReserva, tipoHora }: BookingModalProps) => {
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs | null>(null);
   const [guestCount, setGuestCount] = useState<number>(0);
   const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
-  const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
+  // endTime se calcula automáticamente
+  const endTime = startTime ? startTime.add(duracionReserva, 'hour') : null;
   const [guestIdentifications, setGuestIdentifications] = useState<string[]>(Array(maxGuests).fill(''));
   const { createReservation, isLoading } = useCreateReservation();
   const { user } = useAuth();
 
   const handleBooking = async () => {
+    // Validar reserva con 24 horas de anticipación
+    if (selectedDate && startTime) {
+      const now = dayjs();
+      const reservaDateTime = selectedDate.hour(startTime.hour()).minute(0).second(0);
+      if (reservaDateTime.diff(now, 'hour') < 24) {
+        toast.error('Las reservas deben hacerse con al menos 24 horas de anticipación.', {
+          duration: 4000,
+          position: 'top-center',
+        });
+        return;
+      }
+    }
     const reservationData = {
       identification: user?.identification || "",
       spaceName,
@@ -55,12 +73,19 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
 
   dayjs.locale('es');
 
+  // Solo permite seleccionar horas válidas
+  const getValidHours = () => {
+    const hours: number[] = [];
+    for (let h = horaLimiteInicio; h <= horaLimiteFin - duracionReserva; h++) {
+      if (tipoHora === 'par' && h % 2 !== 0) continue;
+      if (tipoHora === 'impar' && h % 2 === 0) continue;
+      hours.push(h);
+    }
+    return hours;
+  };
+
   const handleStartTimeChange = (newValue: dayjs.Dayjs | null) => {
     setStartTime(newValue);
-    // Si la nueva hora de inicio es después de la hora de fin, resetea la hora de fin
-    if (newValue && endTime && newValue.isAfter(endTime)) {
-      setEndTime(null);
-    }
   };
 
   const handleGuestIdentificationChange = (identifications: string[]) => {
@@ -118,6 +143,7 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
                   <DateSelector
                     selectedDate={selectedDate}
                     onDateChange={setSelectedDate}
+                     validHours={getValidHours()}
                   />
                 </div>
 
@@ -129,11 +155,12 @@ const BookingModal = ({ isOpen, onClose, spaceName = "espacio", maxGuests = 10 }
                     onGuestCountChange={setGuestCount}
                   />
 
+                  {/* Selector solo para hora de entrada */}
                   <TimeSelector
                     startTime={startTime}
-                    endTime={endTime}
                     onStartTimeChange={handleStartTimeChange}
-                    onEndTimeChange={setEndTime}
+                    validHours={getValidHours()}
+                    selectedDate={selectedDate}
                   />
                 </div>
               </div>

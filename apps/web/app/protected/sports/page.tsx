@@ -85,6 +85,10 @@ export default function SportsPage() {
         isOpen={modalOpen}
         onClose={handleCloseModal}
         spaceName={selectedSpaceName}
+        horaLimiteInicio={6}
+        horaLimiteFin={20}
+        duracionReserva={2}
+        tipoHora="par"
       />
     </ResponsiveLayout>
   );
