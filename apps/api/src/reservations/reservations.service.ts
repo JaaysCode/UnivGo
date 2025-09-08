@@ -155,20 +155,21 @@ export class ReservationsService {
   async remove(id: number): Promise<void> {
     await this.reservationRepository.delete(id);
   }
-    // Cancela automáticamente las reservaciones cuya fecha ya pasó.
-    async autoCancelExpiredReservations(): Promise<number> {
-      const today = new Date();
-      const expiredReservations = await this.reservationRepository.find({
-        where: {
-          reservationDate: LessThan(today),
-          status: ReservationStatus.PENDING,
-        },
+
+  // Cancela automáticamente las reservaciones cuya fecha ya pasó.
+  async autoCancelExpiredReservations(): Promise<number> {
+    const today = new Date();
+    const expiredReservations = await this.reservationRepository.find({
+      where: {
+        reservationDate: LessThan(today),
+        status: ReservationStatus.PENDING,
+      },
+    });
+    for (const reservation of expiredReservations) {
+      await this.reservationRepository.update(reservation.id, {
+        status: ReservationStatus.CANCELLED_BY_ADMIN,
       });
-      for (const reservation of expiredReservations) {
-        await this.reservationRepository.update(reservation.id, {
-          status: ReservationStatus.CANCELLED_BY_ADMIN,
-        });
-      }
-      return expiredReservations.length;
     }
+    return expiredReservations.length;
+  }
 }
