@@ -26,7 +26,8 @@ export class ReservationsController {
   }
 
   @Get('user/:identification')
-  findByUserIdentification(@Param('identification') identification: string) {
+  async findByUserIdentification(@Param('identification') identification: string) {
+    await this.reservationsService.autoCancelExpiredReservations();
     return this.reservationsService.findByUserIdentification(identification);
   }
 
