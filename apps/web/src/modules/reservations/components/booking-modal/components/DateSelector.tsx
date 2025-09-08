@@ -4,13 +4,18 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 
-
-interface DateSelectorProps {
+type DateSelectorProps = {
     selectedDate: dayjs.Dayjs | null;
     onDateChange: (date: dayjs.Dayjs | null) => void;
+    validHours: number[];
 }
 
-export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) => {
+export const DateSelector = ({ selectedDate, onDateChange, validHours = [] }: DateSelectorProps) => {
+    // Función para saber si el día tiene al menos una hora válida
+    const isDayAvailable = (date: dayjs.Dayjs) => {
+        const now = dayjs();
+        return validHours.some(h => date.hour(h).minute(0).second(0).diff(now, 'hour') >= 24);
+    };
     return (
         <div className="w-full max-w-full">
             <h3 className='text-sm sm:text-base lg:text-lg font-medium text-gray-700 mb-2'>
@@ -20,6 +25,7 @@ export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                         disablePast
+                        shouldDisableDate={date => date.isSame(dayjs(), 'day') || !isDayAvailable(date)}
                         value={selectedDate}
                         onChange={onDateChange}
                         sx={{
