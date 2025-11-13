@@ -9,6 +9,7 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { SpacesModule } from './spaces/spaces.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { PingModule } from './ping/ping.module';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import { AuthGuard } from './auth/auth.guard';
     ReservationsModule,
 
     SpacesModule,
+
+    PingModule,
   ],
 
   controllers: [AppController],
