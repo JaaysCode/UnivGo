@@ -15,7 +15,7 @@ export default function Home() {
     
     if (token) {
       // Si hay token, redirigir a la página principal protegida
-      router.push("/protected/main");
+      router.push("/main");
     } else {
       // Si no hay token, mostrar el login
       setIsChecking(false);

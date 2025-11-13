@@ -107,7 +107,7 @@ export default function ReservationsPage() {
                 : "¿Por qué no reservas un espacio para tus actividades?"}
             </p>
             {filter === "all" && (
-              <Button text="Reservar espacio" href="/protected/sports" />
+              <Button text="Reservar espacio" href="/sports" />
             )}
           </div>
         )}

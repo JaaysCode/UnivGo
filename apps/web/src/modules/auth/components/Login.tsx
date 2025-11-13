@@ -69,7 +69,7 @@ export function Login() {
       );
 
       // Don't set loading to false on success - keep button disabled until redirect
-      router.push("/protected/main");
+      router.push("/main");
       return; // Exit early on success
     } catch {
       toast.error("Error de conexión. Intente nuevamente", {

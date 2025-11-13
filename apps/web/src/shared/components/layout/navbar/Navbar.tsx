@@ -53,7 +53,7 @@ export const Navbar = () => {
 
   // Navigation items
   const navItems = [
-    { text: "Mis reservas", href: "/protected/my-reservations" },
+    { text: "Mis reservas", href: "/my-reservations" },
     { text: "Espacios", href: "/espacios" },
   ];
 
@@ -66,7 +66,7 @@ export const Navbar = () => {
             <button
               onClick={() => {
                 // Use Next.js app router redirect
-                window.location.href = "/protected/main"; // Adjust the path as needed
+                window.location.href = "/main"; // Adjust the path as needed
               }}
               className="flex items-center bg-white rounded-xl p-1.5 hover:shadow-lg transition-shadow duration-300"
               aria-label="Go to home"

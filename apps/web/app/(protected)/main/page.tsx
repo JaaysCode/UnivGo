@@ -35,12 +35,12 @@ export default function Main() {
         onClose={() => setShowChoiceModal(false)}
         option1={{
           label: "Espacio deportivo",
-          route: "/protected/sports",
+          route: "/sports",
           icon: IoIosBasketball,
         }}
         option2={{
           label: "Área común",
-          route: "/protected/common",
+          route: "/common",
           icon: FaBuilding,
         }}
       />
